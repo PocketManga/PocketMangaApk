@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/solo_leveling_login"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".LoginActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_radius"
+        android:backgroundTint="@color/colorTransGray"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="30dp">
+
+        <TextView
+            android:id="@+id/TVLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/login"
+            android:textAlignment="center"
+            android:textColor="@color/colorPurple"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TVUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:paddingHorizontal="10dp"
+            android:text="@string/username"
+            android:textColor="@color/colorPurple"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/ETUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/border_radius"
+            android:backgroundTint="@color/colorBlack"
+            android:ems="10"
+            android:hint="@string/insert_username"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:textColor="@color/colorPurple"
+            android:textColorHint="@color/colorPurple"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/TVPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="10dp"
+            android:text="@string/password"
+            android:textColor="@color/colorPurple"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/ETPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/border_radius"
+            android:backgroundTint="@color/colorBlack"
+            android:ems="10"
+            android:hint="@string/insert_password"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColor="@color/colorPurple"
+            android:textColorHint="@color/colorPurple"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/BTNLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/border_radius"
+            android:backgroundTint="@color/colorPurple"
+            android:onClick="onClickLogin"
+            android:text="@string/login"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

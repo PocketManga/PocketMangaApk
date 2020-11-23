@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">PocketManga</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="insert_username">Insert Username</string>
+    <string name="insert_password">Insert Password</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="to_read">To Read</string>
+    <string name="reading">Reading</string>
+    <string name="completed">Completed</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="library">Library</string>
+    <string name="favorite">Favorite</string>
+    <string name="downloaded">Downloaded</string>
+    <string name="definitions">Definitions</string>
+    <string name="ndOpen">Open</string>
+    <string name="ndClose">Close</string>
+    <string name="latest">Latest</string>
+    <string name="title">Title</string>
+</resources>

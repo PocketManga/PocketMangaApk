@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior ="single">
+        <item
+            android:id="@+id/NavLatest"
+            android:title="@string/latest" />
+
+        <item
+            android:id="@+id/NavCategory"
+            android:title="@string/category" />
+
+        <item android:title="@string/library" >
+
+            <menu >
+                <item
+                    android:id="@+id/NavToRead"
+                    android:title="@string/to_read" />
+                <item
+                    android:id="@+id/NavReading"
+                    android:title="@string/reading" />
+                <item
+                    android:id="@+id/NavCompleted"
+                    android:title="@string/completed" />
+            </menu>
+        </item>
+        <item
+            android:id="@+id/NavFavorite"
+            android:title="@string/favorite" />
+        <item
+            android:id="@+id/NavDownload"
+            android:title="@string/downloaded" />
+        <item
+            android:id="@+id/NavDefinitions"
+            android:title="@string/definitions" />
+    </group>
+</menu>
