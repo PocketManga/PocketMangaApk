@@ -2,17 +2,17 @@ package pocketmanga.aplicacao.movel.modelo;
 
 public class Manga {
     private int IdManga, Image;
-    private String Title, AlternativeTitle, OriginalTitle, SrcImage, ReleaseDate, Description;
+    private String Title, AlternativeTitle, OriginalTitle, SrcImage, ReleaseDate, Server, Description;
     private boolean Status, Oneshot, R18;
 
-    public Manga(int idManga, int image, String title, String alternativeTitle, String originalTitle, String srcImage, String releaseDate, String description, boolean status, boolean oneshot, boolean r18) {
-        IdManga = idManga;
+    public Manga(int image, String title, String alternativeTitle, String originalTitle, String srcImage, String releaseDate, String server, String description, boolean status, boolean oneshot, boolean r18) {
         Image = image;
         Title = title;
         AlternativeTitle = alternativeTitle;
         OriginalTitle = originalTitle;
         SrcImage = srcImage;
         ReleaseDate = releaseDate;
+        Server = server;
         Description = description;
         Status = status;
         Oneshot = oneshot;
@@ -45,6 +45,18 @@ public class Manga {
 
     public void setAlternativeTitle(String alternativeTitle) {
         AlternativeTitle = alternativeTitle;
+    }
+
+    public void setIdManga(int idManga) {
+        IdManga = idManga;
+    }
+
+    public String getServer() {
+        return Server;
+    }
+
+    public void setServer(String server) {
+        Server = server;
     }
 
     public String getOriginalTitle() {

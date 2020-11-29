@@ -6,8 +6,7 @@ public class Chapter {
     private String Name, ReleaseDate, SrcFolder;
     private boolean OneShot;
 
-    public Chapter(int idChapter, int pagesNumber, int season, float number, String name, String releaseDate, String srcFolder, boolean oneShot) {
-        IdChapter = idChapter;
+    public Chapter(int pagesNumber, int season, float number, String name, String releaseDate, String srcFolder, boolean oneShot) {
         PagesNumber = pagesNumber;
         Season = season;
         Number = number;

@@ -13,7 +13,7 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 
-import pocketmanga.aplicacao.movel.adaptadores.GrelhaMangaAdaptador;
+import pocketmanga.aplicacao.movel.adaptadores.GrelhaMangaAdapter;
 import pocketmanga.aplicacao.movel.modelo.Manga;
 import pocketmanga.aplicacao.movel.modelo.SingletonGestorMangas;
 
@@ -32,14 +32,14 @@ public class LatestGrelhaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_latest_grelha, container, false);
 
         gvGrelhaMangas = view.findViewById(R.id.GVGrelhaMangas);
-        mangas = SingletonGestorMangas.getInstance().getMangas();
-        gvGrelhaMangas.setAdapter(new GrelhaMangaAdaptador(getContext(),mangas));
+        mangas = SingletonGestorMangas.getInstance(getContext()).getMangas();
+        gvGrelhaMangas.setAdapter(new GrelhaMangaAdapter(getContext(),mangas));
 
         gvGrelhaMangas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(),InfoMangaActivity.class);
-                intent.putExtra(InfoMangaActivity.IDMANGA,(int) id);
+                Intent intent = new Intent(getContext(), MangaActivity.class);
+                intent.putExtra(MangaActivity.IDMANGA,(int) id);
                 startActivity(intent);
             }
         });
