@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPurple"
-                android:layout_marginTop="10dp"
+                android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:text="Alternative Title" />
@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPurple"
-                android:layout_marginTop="10dp"
+                android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:text="Original Title" />
@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPurple"
-                android:layout_marginTop="10dp"
+                android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:text="Author" />
@@ -83,11 +83,28 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/Categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPurple"
+                android:paddingTop="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Categories" />
+
+            <TextView
+                android:id="@+id/TVCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp" />
+
+            <TextView
                 android:id="@+id/ReleaseDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPurple"
-                android:layout_marginTop="10dp"
+                android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:text="Release On" />
@@ -104,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPurple"
-                android:layout_marginTop="10dp"
+                android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:text="Server" />
@@ -121,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPurple"
-                android:layout_marginTop="10dp"
+                android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:text="Status" />
@@ -138,7 +155,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPurple"
-                android:layout_marginTop="10dp"
+                android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:text="Oneshot" />
@@ -151,11 +168,28 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/R18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPurple"
+                android:paddingTop="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="R18" />
+
+            <TextView
+                android:id="@+id/TVR18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp" />
+
+            <TextView
                 android:id="@+id/Chapters"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPurple"
-                android:layout_marginTop="10dp"
+                android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:text="Chapters" />
@@ -168,28 +202,11 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/Categories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPurple"
-                android:layout_marginTop="10dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="Categories" />
-
-            <TextView
-                android:id="@+id/TVCategories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp" />
-
-            <TextView
                 android:id="@+id/Description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPurple"
-                android:layout_marginTop="10dp"
+                android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:text="Description" />

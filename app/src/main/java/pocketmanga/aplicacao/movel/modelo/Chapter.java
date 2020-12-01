@@ -16,6 +16,10 @@ public class Chapter {
         OneShot = oneShot;
     }
 
+    public void setIdChapter(int idChapter) {
+        IdChapter = idChapter;
+    }
+
     public int getIdChapter() {
         return IdChapter;
     }

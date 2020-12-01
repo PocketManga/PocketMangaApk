@@ -7,12 +7,11 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
 import pocketmanga.aplicacao.movel.adaptadores.MangaTabAdapter;
 import pocketmanga.aplicacao.movel.modelo.Manga;
-import pocketmanga.aplicacao.movel.modelo.SingletonGestorMangas;
+import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 
 public class MangaActivity extends AppCompatActivity {
 
@@ -37,7 +36,7 @@ public class MangaActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         int id = getIntent().getIntExtra(IDMANGA, -1);
-        manga = SingletonGestorMangas.getInstance(getApplicationContext()).getManga(id);
+        manga = SingletonGestorPocketManga.getInstance(getApplicationContext()).getManga(id);
 
         MangaTabAdapter mangaTabAdapter = new
                 MangaTabAdapter(getSupportFragmentManager(),

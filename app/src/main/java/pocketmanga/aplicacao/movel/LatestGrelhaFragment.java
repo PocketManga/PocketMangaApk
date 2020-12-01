@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import pocketmanga.aplicacao.movel.adaptadores.GrelhaMangaAdapter;
 import pocketmanga.aplicacao.movel.modelo.Manga;
-import pocketmanga.aplicacao.movel.modelo.SingletonGestorMangas;
+import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 
 public class LatestGrelhaFragment extends Fragment {
     private GridView gvGrelhaMangas;
@@ -32,7 +32,7 @@ public class LatestGrelhaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_latest_grelha, container, false);
 
         gvGrelhaMangas = view.findViewById(R.id.GVGrelhaMangas);
-        mangas = SingletonGestorMangas.getInstance(getContext()).getMangas();
+        mangas = SingletonGestorPocketManga.getInstance(getContext()).getMangas();
         gvGrelhaMangas.setAdapter(new GrelhaMangaAdapter(getContext(),mangas));
 
         gvGrelhaMangas.setOnItemClickListener(new AdapterView.OnItemClickListener() {

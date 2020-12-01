@@ -14,11 +14,12 @@ import pocketmanga.aplicacao.movel.modelo.Manga;
 public class InfoMangaFragment extends Fragment {
 
     private Manga manga;
-    private TextView tvDescriptionTop, tvTitle, tvAlternativeTitle, tvOriginalTitle, tvAuthor, tvReleaseDate, tvServer, tvStatus, tvOneshot, tvChapters, tvCategories, tvDescription;
+    private TextView tvDescriptionTop, tvTitle, tvAlternativeTitle, tvOriginalTitle, tvAuthor, tvR18,
+            tvReleaseDate, tvServer, tvStatus, tvOneshot, tvChapters, tvCategories, tvDescription,
+            tvLabelAlternativeTitle, tvLabelOriginalTitle, tvLabelOneshot, tvLabelR18;
 
     public InfoMangaFragment(Manga manga) {
         this.manga = manga;
-        // Required empty public constructor
     }
 
 
@@ -36,9 +37,15 @@ public class InfoMangaFragment extends Fragment {
         tvServer = view.findViewById(R.id.TVServer);
         tvStatus = view.findViewById(R.id.TVStatus);
         tvOneshot = view.findViewById(R.id.TVOneshot);
+        tvR18 = view.findViewById(R.id.TVR18);
         tvChapters = view.findViewById(R.id.TVChapters);
         tvCategories = view.findViewById(R.id.TVCategories);
         tvDescription = view.findViewById(R.id.TVDescription);
+
+        tvLabelAlternativeTitle = view.findViewById(R.id.AlternativeTitle);
+        tvLabelOriginalTitle = view.findViewById(R.id.OriginalTitle);
+        tvLabelOneshot = view.findViewById(R.id.Oneshot);
+        tvLabelR18 = view.findViewById(R.id.R18);
 
         if(manga != null){
             carregarMangaInformation();
@@ -50,8 +57,18 @@ public class InfoMangaFragment extends Fragment {
 
     private void carregarMangaInformation() {
         tvTitle.setText(manga.getTitle());
-        tvAlternativeTitle.setText(manga.getAlternativeTitle());
-        tvOriginalTitle.setText(manga.getOriginalTitle());
+        if(manga.getAlternativeTitle() != null) {
+            tvAlternativeTitle.setText(manga.getAlternativeTitle());
+        }else{
+            tvLabelAlternativeTitle.getLayoutParams().height = 0;
+            tvAlternativeTitle.getLayoutParams().height = 0;
+        }
+        if(manga.getOriginalTitle() != null) {
+            tvOriginalTitle.setText(manga.getOriginalTitle());
+        }else{
+            tvLabelOriginalTitle.getLayoutParams().height = 0;
+            tvOriginalTitle.getLayoutParams().height = 0;
+        }
         //tvAuthor.setText(manga.get());
         tvReleaseDate.setText(manga.getReleaseDate()+"");
         tvServer.setText(manga.getServer());
@@ -63,10 +80,21 @@ public class InfoMangaFragment extends Fragment {
         if(manga.isOneshot()) {
             tvOneshot.setText("Yes");
         }else{
-            tvOneshot.setText("No");
+            tvLabelOneshot.getLayoutParams().height = 0;
+            tvOneshot.getLayoutParams().height = 0;
+        }
+        if(manga.isR18()) {
+            tvR18.setText("Yes");
+        }else{
+            tvLabelR18.getLayoutParams().height = 0;
+            tvR18.getLayoutParams().height = 0;
         }
         //tvChapters.setText(manga.getAutor());
         //tvCategories.setText(manga.get());
-        tvDescription.setText(manga.getDescription());
+        if(manga.getDescription() != null) {
+            tvDescription.setText(manga.getDescription());
+        }else{
+            tvDescription.setText("N/A");
+        }
     }
 }
