@@ -26,7 +26,7 @@ public class MangaTabAdapter extends FragmentPagerAdapter {
             case 0:
                 return new InfoMangaFragment(manga);
             case 1:
-                return new ChapterListFragment();
+                return new ChapterListFragment(manga);
             default:
                 return null;
         }

@@ -1,15 +1,16 @@
 package pocketmanga.aplicacao.movel.modelo;
 
 public class Chapter {
-    private int IdChapter, PagesNumber, Season;
-    private float Number;
+    private int IdChapter, PagesNumber, Season, MangaId;
+    private double Number;
     private String Name, ReleaseDate, SrcFolder;
     private boolean OneShot;
 
-    public Chapter(int pagesNumber, int season, float number, String name, String releaseDate, String srcFolder, boolean oneShot) {
+    public Chapter(int pagesNumber, int season, int mangaId, double number, String name, String releaseDate, String srcFolder, boolean oneShot) {
         PagesNumber = pagesNumber;
         Season = season;
         Number = number;
+        MangaId = mangaId;
         Name = name;
         ReleaseDate = releaseDate;
         SrcFolder = srcFolder;
@@ -32,6 +33,18 @@ public class Chapter {
         PagesNumber = pagesNumber;
     }
 
+    public int getMangaId() {
+        return MangaId;
+    }
+
+    public void setMangaId(int mangaId) {
+        MangaId = mangaId;
+    }
+
+    public void setNumber(double number) {
+        Number = number;
+    }
+
     public int getSeason() {
         return Season;
     }
@@ -40,12 +53,8 @@ public class Chapter {
         Season = season;
     }
 
-    public float getNumber() {
+    public double getNumber() {
         return Number;
-    }
-
-    public void setNumber(float number) {
-        Number = number;
     }
 
     public String getName() {

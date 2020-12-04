@@ -53,7 +53,7 @@ public class MenuMainActivity extends AppCompatActivity implements NavigationVie
 
     private void carregarFragmentoInicial() {
         navigationView.setCheckedItem(R.id.NavLatest);
-        Fragment fragment = new LatestGrelhaFragment();
+        Fragment fragment = new MangaGrelhaFragment("latest");
         fragmentManager.beginTransaction().replace(R.id.contentFragment, fragment).commit();
         setTitle("Latest");
     }
