@@ -1,33 +1,52 @@
 package pocketmanga.aplicacao.movel.modelo;
 
 public class Manga {
-    private int IdManga, Image;
-    private String Title, AlternativeTitle, OriginalTitle, SrcImage, ReleaseDate, Server, Description;
-    private boolean Status, Oneshot, R18;
+    private int IdManga;
+    private String Image, Title, AlternativeTitle, OriginalTitle, ReleaseDate, Server, List, Description;
+    private boolean Status, Oneshot, R18, Favorite;
 
-    public Manga(int image, String title, String alternativeTitle, String originalTitle, String srcImage, String releaseDate, String server, String description, boolean status, boolean oneshot, boolean r18) {
+    public Manga(int idManga, String image, String title, String alternativeTitle, String originalTitle, String releaseDate, String server,
+                 String list, String description, boolean status, boolean oneshot, boolean r18, boolean favorite) {
+        IdManga = idManga;
         Image = image;
         Title = title;
         AlternativeTitle = alternativeTitle;
         OriginalTitle = originalTitle;
-        SrcImage = srcImage;
         ReleaseDate = releaseDate;
         Server = server;
         Description = description;
         Status = status;
         Oneshot = oneshot;
         R18 = r18;
+        Favorite = favorite;
+        List = list;
+    }
+
+    public String getList() {
+        return List;
+    }
+
+    public void setList(String list) {
+        List = list;
+    }
+
+    public boolean isFavorite() {
+        return Favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        Favorite = favorite;
     }
 
     public int getIdManga() {
         return IdManga;
     }
 
-    public int getImage() {
+    public String getImage() {
         return Image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         Image = image;
     }
 
@@ -65,14 +84,6 @@ public class Manga {
 
     public void setOriginalTitle(String originalTitle) {
         OriginalTitle = originalTitle;
-    }
-
-    public String getSrcImage() {
-        return SrcImage;
-    }
-
-    public void setSrcImage(String srcImage) {
-        SrcImage = srcImage;
     }
 
     public String getReleaseDate() {

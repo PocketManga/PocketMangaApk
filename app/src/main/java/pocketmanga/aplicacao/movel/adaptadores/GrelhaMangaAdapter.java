@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.util.ArrayList;
 
 import pocketmanga.aplicacao.movel.R;
@@ -68,6 +71,11 @@ public class GrelhaMangaAdapter extends BaseAdapter {
         public void update(Manga manga){
             tvTitle.setText(manga.getTitle());
             ivImage.setImageResource(manga.getImage());
+            Glide.with(context)
+                    .load(livro.getCapa())
+                    .placeholder(R.drawable.logoipl)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(ivImage);
         }
     }
 }

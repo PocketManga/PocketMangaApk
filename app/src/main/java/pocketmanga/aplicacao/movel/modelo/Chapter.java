@@ -3,10 +3,11 @@ package pocketmanga.aplicacao.movel.modelo;
 public class Chapter {
     private int IdChapter, PagesNumber, Season, MangaId;
     private double Number;
-    private String Name, ReleaseDate, SrcFolder;
-    private boolean OneShot;
+    private String Name, ReleaseDate, SrcFolder, UrlImage;
+    private boolean OneShot, Readed;
 
-    public Chapter(int pagesNumber, int season, int mangaId, double number, String name, String releaseDate, String srcFolder, boolean oneShot) {
+    public Chapter(int idChapter, int pagesNumber, int season, int mangaId, double number, String name, String releaseDate, String srcFolder, String urlImage, boolean oneShot, boolean readed) {
+        IdChapter = idChapter;
         PagesNumber = pagesNumber;
         Season = season;
         Number = number;
@@ -14,7 +15,25 @@ public class Chapter {
         Name = name;
         ReleaseDate = releaseDate;
         SrcFolder = srcFolder;
+        UrlImage = urlImage;
         OneShot = oneShot;
+        Readed = readed;
+    }
+
+    public String getUrlImage() {
+        return UrlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        UrlImage = urlImage;
+    }
+
+    public boolean isReaded() {
+        return Readed;
+    }
+
+    public void setReaded(boolean readed) {
+        Readed = readed;
     }
 
     public void setIdChapter(int idChapter) {
