@@ -70,10 +70,9 @@ public class GrelhaMangaAdapter extends BaseAdapter {
 
         public void update(Manga manga){
             tvTitle.setText(manga.getTitle());
-            ivImage.setImageResource(manga.getImage());
             Glide.with(context)
-                    .load(livro.getCapa())
-                    .placeholder(R.drawable.logoipl)
+                    .load(manga.getImage())
+                    .placeholder(R.drawable.manga_alternative)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(ivImage);
         }

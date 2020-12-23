@@ -28,13 +28,12 @@ public class MangaGrelhaFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_manga_grelha, container, false);
 
         gvGrelhaMangas = view.findViewById(R.id.GVGrelhaMangas);
-        mangas = SingletonGestorPocketManga.getInstance(getContext()).getMangas();
+        mangas = SingletonGestorPocketManga.getInstance(getContext()).getAllMangasAPI();
         gvGrelhaMangas.setAdapter(new GrelhaMangaAdapter(getContext(),mangas));
 
         gvGrelhaMangas.setOnItemClickListener(new AdapterView.OnItemClickListener() {

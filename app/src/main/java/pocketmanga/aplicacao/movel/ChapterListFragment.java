@@ -36,7 +36,7 @@ public class ChapterListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chapter_list, container, false);
 
         lvListaChapters = view.findViewById(R.id.LVListaChapters);
-        chapters = SingletonGestorPocketManga.getInstance(getContext()).getChapters(manga.getIdManga());
+        //chapters = SingletonGestorPocketManga.getInstance(getContext()).getChapters(manga.getIdManga());
         lvListaChapters.setAdapter(new ListaChapterAdapter(getContext(),chapters));
 
         lvListaChapters.setOnItemClickListener(new AdapterView.OnItemClickListener() {
