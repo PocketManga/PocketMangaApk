@@ -1,12 +1,11 @@
 package pocketmanga.aplicacao.movel.adaptadores;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import pocketmanga.aplicacao.movel.ChapterListFragment;
-import pocketmanga.aplicacao.movel.InfoMangaFragment;
+import pocketmanga.aplicacao.movel.fragments.ChapterListFragment;
+import pocketmanga.aplicacao.movel.fragments.InfoMangaFragment;
 import pocketmanga.aplicacao.movel.modelo.Manga;
 
 public class MangaTabAdapter extends FragmentPagerAdapter {

@@ -7,7 +7,7 @@
     android:background="@drawable/solo_leveling_login"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".LoginActivity">
+    tools:context=".activitys.LoginActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"

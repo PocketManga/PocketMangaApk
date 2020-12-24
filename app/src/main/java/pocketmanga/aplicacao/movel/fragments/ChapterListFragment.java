@@ -1,4 +1,4 @@
-package pocketmanga.aplicacao.movel;
+package pocketmanga.aplicacao.movel.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,10 +13,11 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import pocketmanga.aplicacao.movel.R;
+import pocketmanga.aplicacao.movel.activitys.ChapterActivity;
 import pocketmanga.aplicacao.movel.adaptadores.ListaChapterAdapter;
 import pocketmanga.aplicacao.movel.modelo.Chapter;
 import pocketmanga.aplicacao.movel.modelo.Manga;
-import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 
 public class ChapterListFragment extends Fragment {
 
@@ -42,7 +43,7 @@ public class ChapterListFragment extends Fragment {
         lvListaChapters.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(),ChapterActivity.class);
+                Intent intent = new Intent(getContext(), ChapterActivity.class);
                 intent.putExtra(ChapterActivity.IDCHAPTER,(int) id);
                 startActivity(intent);
             }

@@ -2,11 +2,11 @@ package pocketmanga.aplicacao.movel.modelo;
 
 public class Manga {
     private int IdManga;
-    private String Image, Title, AlternativeTitle, OriginalTitle, ReleaseDate, Server, List, Description;
+    private String Image, Title, AlternativeTitle, OriginalTitle, ReleaseDate, Server, List, Description, Authors, Categories;
     private boolean Status, Oneshot, R18, Favorite;
 
     public Manga(int idManga, String image, String title, String alternativeTitle, String originalTitle, String releaseDate, String server,
-                 String list, String description, boolean status, boolean oneshot, boolean r18, boolean favorite) {
+                 String list, String description, String authors, String categories, boolean status, boolean oneshot, boolean r18, boolean favorite) {
         IdManga = idManga;
         Image = image;
         Title = title;
@@ -20,6 +20,24 @@ public class Manga {
         R18 = r18;
         Favorite = favorite;
         List = list;
+        Authors = authors;
+        Categories = categories;
+    }
+
+    public String getAuthors() {
+        return Authors;
+    }
+
+    public void setAuthors(String authors) {
+        Authors = authors;
+    }
+
+    public String getCategories() {
+        return Categories;
+    }
+
+    public void setCategories(String categories) {
+        Categories = categories;
     }
 
     public String getList() {

@@ -4,13 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingVertical="5dp"
-    tools:context=".MangaGrelhaFragment">
+    tools:context=".fragments.MangaGrelhaFragment">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
-    <GridView
-        android:id="@+id/GVGrelhaMangas"
-        android:numColumns="3"
-        android:verticalSpacing="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <GridView
+            android:id="@+id/GVGrelhaMangas"
+            android:numColumns="3"
+            android:verticalSpacing="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

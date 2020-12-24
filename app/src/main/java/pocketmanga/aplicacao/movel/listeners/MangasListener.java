@@ -6,4 +6,6 @@ import pocketmanga.aplicacao.movel.modelo.Manga;
 
 public interface MangasListener {
     void onRefreshMangasList(ArrayList<Manga> MangasList);
+
+    void onRefreshInfo();
 }

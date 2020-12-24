@@ -1,4 +1,4 @@
-package pocketmanga.aplicacao.movel;
+package pocketmanga.aplicacao.movel.activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import pocketmanga.aplicacao.movel.R;
 import pocketmanga.aplicacao.movel.adaptadores.ListaImageChapterAdapter;
 import pocketmanga.aplicacao.movel.modelo.Chapter;
 import pocketmanga.aplicacao.movel.modelo.Manga;

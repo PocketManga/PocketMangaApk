@@ -1,4 +1,4 @@
-package pocketmanga.aplicacao.movel;
+package pocketmanga.aplicacao.movel.activitys;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -9,6 +9,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +18,15 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import pocketmanga.aplicacao.movel.fragments.MangaGrelhaFragment;
+import pocketmanga.aplicacao.movel.R;
+
 public class MenuMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     public static final String USERNAME = "username";
+    public static final String TOKEN="TOKEN";
+    public static final String PREF_INFO_USER ="PREF_INFO_USER";
+
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private String username = "";
@@ -30,32 +39,37 @@ public class MenuMainActivity extends AppCompatActivity implements NavigationVie
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         navigationView = findViewById(R.id.nav_view);
         drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer,
-                toolbar, R.string.ndOpen, R.string.ndClose);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.ndOpen, R.string.ndClose);
         toggle.syncState();
+
         drawer.addDrawerListener(toggle);
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager = getSupportFragmentManager();
-
 
         carregarCabecalho();
         carregarFragmentoInicial();
     }
 
     private void carregarCabecalho() {
-        username = getIntent().getStringExtra(USERNAME);
+        SharedPreferences sharedPrefInfoUser = getSharedPreferences(PREF_INFO_USER, Context.MODE_PRIVATE);
+
+        username = sharedPrefInfoUser.getString(USERNAME,"No username");
+
         View hView = navigationView.getHeaderView(0);
         TextView tvEmail = hView.findViewById(R.id.TvEmail);
         tvEmail.setText(username);
+
+        setTitle("Manga List");
     }
 
     private void carregarFragmentoInicial() {
         navigationView.setCheckedItem(R.id.NavLatest);
-        Fragment fragment = new MangaGrelhaFragment("latest");
+        Fragment fragment = new MangaGrelhaFragment();
         fragmentManager.beginTransaction().replace(R.id.contentFragment, fragment).commit();
-        setTitle("Latest");
     }
 
     @Override

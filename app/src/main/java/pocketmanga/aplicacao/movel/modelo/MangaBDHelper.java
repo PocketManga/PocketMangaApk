@@ -27,6 +27,8 @@ public class MangaBDHelper extends SQLiteOpenHelper {
     private static final String ONESHOT_MANGA = "Oneshot";
     private static final String R18_MANGA = "R18";
     private static final String FAVORITE_MANGA = "Favorite";
+    private static final String AUTHORS_MANGA = "Authors";
+    private static final String CATEGORIES_MANGA = "Categories";
 
     private final SQLiteDatabase db;
 
@@ -48,6 +50,8 @@ public class MangaBDHelper extends SQLiteOpenHelper {
                 SERVER_MANGA+" TEXT NOT NULL, "+
                 LIST_MANGA+" TEXT, "+
                 DESCRIPTION_MANGA+" TEXT NOT NULL, "+
+                AUTHORS_MANGA+" TEXT NOT NULL, "+
+                CATEGORIES_MANGA+" TEXT NOT NULL, "+
                 STATUS_MANGA+" BOOL NOT NULL, "+
                 ONESHOT_MANGA+" BOOL NOT NULL, "+
                 R18_MANGA+" BOOL NOT NULL, "+
@@ -79,12 +83,14 @@ public class MangaBDHelper extends SQLiteOpenHelper {
         values.put(ORIGINAL_TITLE_MANGA,manga.getOriginalTitle());
         values.put(RELEASE_DATE_MANGA,manga.getReleaseDate());
         values.put(SERVER_MANGA,manga.getServer());
-        values.put(LIST_MANGA,manga.getDescription());
-        values.put(DESCRIPTION_MANGA,manga.isStatus());
-        values.put(STATUS_MANGA,manga.isOneshot());
-        values.put(ONESHOT_MANGA,manga.isR18());
-        values.put(R18_MANGA,manga.isFavorite());
-        values.put(FAVORITE_MANGA,manga.getList());
+        values.put(LIST_MANGA,manga.getList());
+        values.put(DESCRIPTION_MANGA,manga.getDescription());
+        values.put(STATUS_MANGA,manga.isStatus());
+        values.put(ONESHOT_MANGA,manga.isOneshot());
+        values.put(R18_MANGA,manga.isR18());
+        values.put(FAVORITE_MANGA,manga.isFavorite());
+        values.put(AUTHORS_MANGA,manga.getAuthors());
+        values.put(CATEGORIES_MANGA,manga.getCategories());
 
         this.db.insert(TABLE_NAME,null,values);
     }
@@ -103,12 +109,14 @@ public class MangaBDHelper extends SQLiteOpenHelper {
         values.put(ORIGINAL_TITLE_MANGA,manga.getOriginalTitle());
         values.put(RELEASE_DATE_MANGA,manga.getReleaseDate());
         values.put(SERVER_MANGA,manga.getServer());
-        values.put(LIST_MANGA,manga.getDescription());
-        values.put(DESCRIPTION_MANGA,manga.isStatus());
-        values.put(STATUS_MANGA,manga.isOneshot());
-        values.put(ONESHOT_MANGA,manga.isR18());
-        values.put(R18_MANGA,manga.isFavorite());
-        values.put(FAVORITE_MANGA,manga.getList());
+        values.put(LIST_MANGA,manga.getList());
+        values.put(DESCRIPTION_MANGA,manga.getDescription());
+        values.put(STATUS_MANGA,manga.isStatus());
+        values.put(ONESHOT_MANGA,manga.isOneshot());
+        values.put(R18_MANGA,manga.isR18());
+        values.put(FAVORITE_MANGA,manga.isFavorite());
+        values.put(AUTHORS_MANGA,manga.getAuthors());
+        values.put(CATEGORIES_MANGA,manga.getCategories());
 
         int nRows=this.db.update(TABLE_NAME,values, "idManga = ?", new String[]{manga.getIdManga()+""});
 
@@ -139,7 +147,7 @@ public class MangaBDHelper extends SQLiteOpenHelper {
     public ArrayList<Manga> getAllMangasBD(){
         ArrayList<Manga> mangas=new ArrayList<>();
         Cursor cursor=this.db.query(TABLE_NAME,new String[]{ID_MANGA,IMAGE_MANGA,TITLE_MANGA,ALTERNATIVE_TITLE_MANGA,ORIGINAL_TITLE_MANGA,RELEASE_DATE_MANGA,SERVER_MANGA,
-                        LIST_MANGA,DESCRIPTION_MANGA,STATUS_MANGA,ONESHOT_MANGA,R18_MANGA,FAVORITE_MANGA},
+                        LIST_MANGA,DESCRIPTION_MANGA,AUTHORS_MANGA,CATEGORIES_MANGA,STATUS_MANGA,ONESHOT_MANGA,R18_MANGA,FAVORITE_MANGA},
                 null,null,null,null,null);
 
         if(cursor.moveToFirst()){
@@ -153,10 +161,12 @@ public class MangaBDHelper extends SQLiteOpenHelper {
                         cursor.getString(6),
                         cursor.getString(7),
                         cursor.getString(8),
-                        cursor.isNull(9),
-                        cursor.isNull(10),
+                        cursor.getString(9),
+                        cursor.getString(10),
                         cursor.isNull(11),
-                        cursor.isNull(12));
+                        cursor.isNull(12),
+                        cursor.isNull(13),
+                        cursor.isNull(14));
                 mangas.add(auxManga);
             }while(cursor.moveToNext());
         }

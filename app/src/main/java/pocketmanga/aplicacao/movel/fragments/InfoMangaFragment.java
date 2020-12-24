@@ -1,4 +1,4 @@
-package pocketmanga.aplicacao.movel;
+package pocketmanga.aplicacao.movel.fragments;
 
 import android.os.Bundle;
 
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import pocketmanga.aplicacao.movel.R;
 import pocketmanga.aplicacao.movel.modelo.Manga;
 
 public class InfoMangaFragment extends Fragment {

@@ -21,6 +21,8 @@ import pocketmanga.aplicacao.movel.R;
 import pocketmanga.aplicacao.movel.listeners.ChaptersListener;
 import pocketmanga.aplicacao.movel.listeners.LoginListener;
 import pocketmanga.aplicacao.movel.listeners.MangasListener;
+import pocketmanga.aplicacao.movel.utils.ConnectionJsonParser;
+import pocketmanga.aplicacao.movel.utils.LoginJsonParser;
 import pocketmanga.aplicacao.movel.utils.MangaJsonParser;
 
 public class SingletonGestorPocketManga {
@@ -61,6 +63,10 @@ public class SingletonGestorPocketManga {
 
         mangasBD = new MangaBDHelper(context);
         chaptersBD = new ChapterBDHelper(context);
+    }
+
+    public void setMangasListener(MangasListener mangasListener) {
+        this.mangasListener = mangasListener;
     }
 
     public Manga getManga(int id){
@@ -172,15 +178,14 @@ public class SingletonGestorPocketManga {
     /********************************** Métodos de acesso à API ***********************************/
 
     public void getAllMangasAPI(final Context context) {
-        if (!MangaJsonParser.isConnectionInternet(context)) {
+        if (!ConnectionJsonParser.isConnectionInternet(context)) {
 
             Toast.makeText(context, "Não existe ligação à internet", Toast.LENGTH_SHORT).show();
 
-
             if(mangasListener!=null)
                 mangasListener.onRefreshMangasList(mangasBD.getAllMangasBD());
-        } else {
-            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlAPIMangas, null, new Response.Listener<JSONArray>() {
+            } else {
+                JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlAPIMangas, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     mangas = MangaJsonParser.parserJsonMangas(response);
@@ -219,7 +224,7 @@ public class SingletonGestorPocketManga {
         StringRequest req = new StringRequest(Request.Method.POST, mUrlAPILogin, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                String token=MangaJsonParser.parserJsonLogin(response);
+                String token = LoginJsonParser.parserJsonLogin(response);
                 if(loginListener!=null)
                     loginListener.onValidateLogin(token,email);
             }

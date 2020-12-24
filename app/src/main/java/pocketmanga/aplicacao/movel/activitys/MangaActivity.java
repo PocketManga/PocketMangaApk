@@ -1,4 +1,4 @@
-package pocketmanga.aplicacao.movel;
+package pocketmanga.aplicacao.movel.activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -9,11 +9,15 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+
+import pocketmanga.aplicacao.movel.R;
 import pocketmanga.aplicacao.movel.adaptadores.MangaTabAdapter;
+import pocketmanga.aplicacao.movel.listeners.MangasListener;
 import pocketmanga.aplicacao.movel.modelo.Manga;
 import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 
-public class MangaActivity extends AppCompatActivity {
+public class MangaActivity extends AppCompatActivity implements MangasListener {
 
     public static final String IDMANGA = "IDMANGA";
     private Manga manga;
@@ -53,5 +57,16 @@ public class MangaActivity extends AppCompatActivity {
     private void carregarMangaInformation() {
         tvDescriptionTop.setText(manga.getDescription());
         //imgCapa.setImageResource(manga.getCapa());
+    }
+
+    @Override
+    public void onRefreshMangasList(ArrayList<Manga> MangasList) {
+
+    }
+
+    @Override
+    public void onRefreshInfo() {
+        setResult(RESULT_OK);
+        finish();
     }
 }

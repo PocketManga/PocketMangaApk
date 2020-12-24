@@ -29,12 +29,14 @@ public class MangaJsonParser {
                 String server = manga.getString("Server");
                 String list = manga.getString("List");
                 String description = manga.getString("Description");
+                String authors = manga.getString("Authors");
+                String categories = manga.getString("Categories");
                 boolean status = manga.getBoolean("Status");
                 boolean oneshot = manga.getBoolean("Oneshot");
                 boolean r18 = manga.getBoolean("R18");
                 boolean favorite = manga.getBoolean("Favorite");
 
-                Manga auxManga = new Manga(idManga, image, title, alternativeTitle, originalTitle, releaseDate, server, list, description, status, oneshot, r18, favorite);
+                Manga auxManga = new Manga(idManga, image, title, alternativeTitle, originalTitle, releaseDate, server, list, description, authors, categories, status, oneshot, r18, favorite);
                 mangas.add(auxManga);
             }
         } catch (JSONException e) {
@@ -58,38 +60,19 @@ public class MangaJsonParser {
             String server = manga.getString("Server");
             String list = manga.getString("List");
             String description = manga.getString("Description");
+            String authors = manga.getString("Authors");
+            String categories = manga.getString("Categories");
             boolean status = manga.getBoolean("Status");
             boolean oneshot = manga.getBoolean("Oneshot");
             boolean r18 = manga.getBoolean("R18");
             boolean favorite = manga.getBoolean("Favorite");
 
-            auxManga = new Manga(idManga, image, title, alternativeTitle, originalTitle, releaseDate, server, list, description, status, oneshot, r18, favorite);
+            auxManga = new Manga(idManga, image, title, alternativeTitle, originalTitle, releaseDate, server, list, description, authors, categories, status, oneshot, r18, favorite);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return auxManga;
-    }
-
-    public static String parserJsonLogin(String response) {
-        String token = null;
-
-        try {
-            JSONObject login = new JSONObject(response);
-            if (login.getBoolean("success"))
-                token = login.getString("token");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return token;
-
-    }
-
-    public static boolean isConnectionInternet(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-
-        return ni != null && ni.isConnected();
     }
 }

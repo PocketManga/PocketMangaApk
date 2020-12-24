@@ -44,7 +44,7 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
                 NAME_CHAPTER+" TEXT, "+
                 RELEASE_DATE_CHAPTER+" TEXT NOT NULL, "+
                 SRC_FOLDER_CHAPTER+" TEXT NOT NULL, "+
-                URL_IMAGE_CHAPTER+" TEXT NOT NULL, "+
+                URL_IMAGE_CHAPTER+" TEXT, "+
                 ONESHOT_CHAPTER+" BOOL NOT NULL, "+
                 READED_CHAPTER+" BOOL NOT NULL, "+
                 MANGA_ID+" INTEGER NOT NULL);";
