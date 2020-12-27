@@ -8,10 +8,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +24,7 @@ import pocketmanga.aplicacao.movel.R;
 import pocketmanga.aplicacao.movel.listeners.ChaptersListener;
 import pocketmanga.aplicacao.movel.listeners.LoginListener;
 import pocketmanga.aplicacao.movel.listeners.MangasListener;
+import pocketmanga.aplicacao.movel.utils.ChapterJsonParser;
 import pocketmanga.aplicacao.movel.utils.ConnectionJsonParser;
 import pocketmanga.aplicacao.movel.utils.LoginJsonParser;
 import pocketmanga.aplicacao.movel.utils.MangaJsonParser;
@@ -29,21 +33,25 @@ public class SingletonGestorPocketManga {
     private static final int ADICIONAR_BD = 1;
     private static final int EDITAR_BD =2 ;
     private static final int REMOVER_BD =3 ;
+    private static final String MANGAS_KEY = "mangas";
 
     private static SingletonGestorPocketManga instance = null;
 
     private ArrayList<Manga> mangas;
     private ArrayList<Chapter> chapters;
-    //private ArrayList<Author> authors;
     //private ArrayList<Category> categories;
+    //private ArrayList<Author> authors;
 
     private MangaBDHelper mangasBD;
     private ChapterBDHelper chaptersBD;
 
     private static RequestQueue volleyQueue = null;
-    private static final String mUrlAPIMangas = "http://localhost/PocketManga/backend/web/api/manga/all/";
-    private static final String mUrlAPIChapters = "http://localhost/PocketManga/backend/web/api/manga/chapter/";
-    private static final String mUrlAPILogin="http://localhost/PocketManga/backend/web/api/login";
+
+    private static final String BASE_URL = "http://192.168.137.1/PocketManga/backend/web/";
+    private static final String mUrlAPIMangas = "api/manga/all/";
+    private static final String mUrlAPIChapters = "api/manga/";
+    private static final String mUrlAPILogin="api/user/login";
+    //private static final String mUrlAPICategories="category/all";
 
     private MangasListener mangasListener;
     private ChaptersListener chaptersListener;
@@ -60,13 +68,14 @@ public class SingletonGestorPocketManga {
     public SingletonGestorPocketManga(Context context) {
         mangas = new ArrayList<>();
         chapters = new ArrayList<>();
-
-        mangasBD = new MangaBDHelper(context);
-        chaptersBD = new ChapterBDHelper(context);
     }
 
     public void setMangasListener(MangasListener mangasListener) {
         this.mangasListener = mangasListener;
+    }
+
+    public void setChaptersListener(ChaptersListener chaptersListener) {
+        this.chaptersListener = chaptersListener;
     }
 
     public Manga getManga(int id){
@@ -83,6 +92,10 @@ public class SingletonGestorPocketManga {
                 return chapter;
         }
         return null;
+    }
+
+    public void getChapterImages(Chapter chapter){
+        chaptersListener.onRefreshChapterImages(chapter);
     }
 
     /*********************************** Métodos de acesso à BD ***********************************/
@@ -175,7 +188,7 @@ public class SingletonGestorPocketManga {
         }
     }
 
-    /********************************** Métodos de acesso à API ***********************************/
+    /************** Métodos de acesso à API ******************************/
 
     public void getAllMangasAPI(final Context context) {
         if (!ConnectionJsonParser.isConnectionInternet(context)) {
@@ -184,12 +197,13 @@ public class SingletonGestorPocketManga {
 
             if(mangasListener!=null)
                 mangasListener.onRefreshMangasList(mangasBD.getAllMangasBD());
-            } else {
-                JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, mUrlAPIMangas, null, new Response.Listener<JSONArray>() {
+        } else {
+            String url = BASE_URL+mUrlAPIMangas+"latestUpdates/1";
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     mangas = MangaJsonParser.parserJsonMangas(response);
-                    addMangasBD(mangas);
+                    //addMangasBD(mangas);
 
                     if(mangasListener!=null)
                         mangasListener.onRefreshMangasList(mangas);
@@ -205,28 +219,44 @@ public class SingletonGestorPocketManga {
         }
     }
 
+    public void getAllChaptersAPI(final Context context, final int manga_id) {
+        if (!ConnectionJsonParser.isConnectionInternet(context)) {
 
-    private void onUpdateMangasListBD( Manga manga, int operacao){
-        switch (operacao){
-            case ADICIONAR_BD:
-                addMangaBD(manga);
-                break;
-            case EDITAR_BD:
-                updateMangaBD(manga);
-                break;
-            case REMOVER_BD:
-                deleteMangaBD(manga.getIdManga());
-                break;
+            Toast.makeText(context, "Não existe ligação à internet", Toast.LENGTH_SHORT).show();
+
+            if(chaptersListener!=null)
+                chaptersListener.onRefreshChaptersList(chaptersBD.getAllChaptersBD());
+        } else {
+            String url = BASE_URL+mUrlAPIChapters+manga_id+"/chapters/1";
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    chapters = ChapterJsonParser.parserJsonChapters(response);
+
+                    if(chaptersListener!=null)
+                        chaptersListener.onRefreshChaptersList(chapters);
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            volleyQueue.add(req);
         }
     }
 
-    public void loginAPI(final String email, final String password,final Context context){
-        StringRequest req = new StringRequest(Request.Method.POST, mUrlAPILogin, new Response.Listener<String>() {
+    public void loginAPI(final String username, final String password, final Context context){
+        String url = BASE_URL+mUrlAPILogin;
+        StringRequest req = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                String token = LoginJsonParser.parserJsonLogin(response);
+                int IdUser = LoginJsonParser.parserJsonIdUser(response);
+                String token = LoginJsonParser.parserJsonToken(response);
+                String Username = LoginJsonParser.parserJsonUsername(response);
                 if(loginListener!=null)
-                    loginListener.onValidateLogin(token,email);
+                    loginListener.onValidateLogin(token,Username, IdUser);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -236,8 +266,8 @@ public class SingletonGestorPocketManga {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String,String> params=new HashMap<>();
-                params.put("email",email);
+                Map<String,String> params = new HashMap<>();
+                params.put("username",username);
                 params.put("password",password);
                 return params;
             }

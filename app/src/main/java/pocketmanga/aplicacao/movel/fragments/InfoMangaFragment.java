@@ -15,7 +15,7 @@ import pocketmanga.aplicacao.movel.modelo.Manga;
 public class InfoMangaFragment extends Fragment {
 
     private Manga manga;
-    private TextView tvDescriptionTop, tvTitle, tvAlternativeTitle, tvOriginalTitle, tvAuthor, tvR18,
+    private TextView tvTitle, tvAlternativeTitle, tvOriginalTitle, tvAuthor, tvR18,
             tvReleaseDate, tvServer, tvStatus, tvOneshot, tvChapters, tvCategories, tvDescription,
             tvLabelAlternativeTitle, tvLabelOriginalTitle, tvLabelOneshot, tvLabelR18;
 
@@ -58,19 +58,20 @@ public class InfoMangaFragment extends Fragment {
 
     private void carregarMangaInformation() {
         tvTitle.setText(manga.getTitle());
-        if(manga.getAlternativeTitle() != null) {
-            tvAlternativeTitle.setText(manga.getAlternativeTitle());
-        }else{
+        if(manga.getAlternativeTitle().equals("null") || manga.getDescription() == null) {
             tvLabelAlternativeTitle.getLayoutParams().height = 0;
             tvAlternativeTitle.getLayoutParams().height = 0;
-        }
-        if(manga.getOriginalTitle() != null) {
-            tvOriginalTitle.setText(manga.getOriginalTitle());
         }else{
+            tvAlternativeTitle.setText(manga.getAlternativeTitle());
+        }
+        if(manga.getOriginalTitle().equals("null") || manga.getDescription() == null) {
             tvLabelOriginalTitle.getLayoutParams().height = 0;
             tvOriginalTitle.getLayoutParams().height = 0;
+        }else{
+            tvOriginalTitle.setText(manga.getOriginalTitle());
         }
-        //tvAuthor.setText(manga.get());
+        tvAuthor.setText(manga.getAuthors());
+        tvCategories.setText(manga.getCategories());
         tvReleaseDate.setText(manga.getReleaseDate()+"");
         tvServer.setText(manga.getServer());
         if(manga.isStatus()) {
@@ -91,11 +92,10 @@ public class InfoMangaFragment extends Fragment {
             tvR18.getLayoutParams().height = 0;
         }
         //tvChapters.setText(manga.getAutor());
-        //tvCategories.setText(manga.get());
-        if(manga.getDescription() != null) {
-            tvDescription.setText(manga.getDescription());
-        }else{
+        if(manga.getDescription().equals("null") || manga.getDescription() == null) {
             tvDescription.setText("N/A");
+        }else{
+            tvDescription.setText(manga.getDescription());
         }
     }
 }

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:background="@color/colorPurple"
-    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -22,6 +22,8 @@
             android:layout_height="wrap_content"
             android:text="@string/title"
             android:textSize="18sp"
+            android:lines="1"
+            android:ellipsize="end"
             android:textColor="@color/colorWhite" />
 
         <TextView

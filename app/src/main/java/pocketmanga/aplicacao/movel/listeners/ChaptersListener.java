@@ -6,4 +6,6 @@ import pocketmanga.aplicacao.movel.modelo.Chapter;
 
 public interface ChaptersListener {
     void onRefreshChaptersList(ArrayList<Chapter> ChaptersList);
+
+    void onRefreshChapterImages(Chapter chapter);
 }

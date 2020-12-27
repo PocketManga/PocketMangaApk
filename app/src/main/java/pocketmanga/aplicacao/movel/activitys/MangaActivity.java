@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class MangaActivity extends AppCompatActivity implements MangasListener {
     private ImageView ivManga;
 
     private TabLayout tlBar;
-    private ViewPager viewPagerp;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class MangaActivity extends AppCompatActivity implements MangasListener {
         setContentView(R.layout.activity_manga);
 
         tlBar = findViewById(R.id.TLBar);
-        viewPagerp = findViewById(R.id.VP);
+        viewPager = findViewById(R.id.VP);
         tvDescriptionTop = findViewById(R.id.TVDescriptionTop);
         ivManga = findViewById(R.id.IVManga);
 
@@ -46,7 +48,11 @@ public class MangaActivity extends AppCompatActivity implements MangasListener {
                 MangaTabAdapter(getSupportFragmentManager(),
                 tlBar.getTabCount(), manga);
 
-        viewPagerp.setAdapter(mangaTabAdapter);
+        viewPager.setAdapter(mangaTabAdapter);
+
+        tlBar.setupWithViewPager(viewPager);
+        tlBar.getTabAt(0).setText(getResources().getText(R.string.more_info));
+        tlBar.getTabAt(1).setText(getResources().getText(R.string.chapters));
 
         if(manga != null){
             setTitle(manga.getTitle());
@@ -56,7 +62,11 @@ public class MangaActivity extends AppCompatActivity implements MangasListener {
 
     private void carregarMangaInformation() {
         tvDescriptionTop.setText(manga.getDescription());
-        //imgCapa.setImageResource(manga.getCapa());
+        Glide.with(getApplicationContext())
+                .load(manga.getImage())
+                .placeholder(R.drawable.manga_alternative)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(ivManga);
     }
 
     @Override

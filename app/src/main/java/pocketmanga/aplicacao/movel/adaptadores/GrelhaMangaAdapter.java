@@ -33,7 +33,7 @@ public class GrelhaMangaAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-            return mangas.get(position);
+        return mangas.get(position);
     }
 
     @Override

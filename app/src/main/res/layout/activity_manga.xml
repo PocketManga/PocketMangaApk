@@ -40,7 +40,9 @@
                 android:id="@+id/TVDescriptionTop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"
+                android:lines="7"
+                android:ellipsize="end" />
         </LinearLayout>
 
     </LinearLayout>
@@ -48,19 +50,24 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/TLBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="@color/colorPurple"
+        app:tabSelectedTextColor="@color/colorPurple"
+        app:tabTextColor="@color/colorBlack">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/TIInformation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/more_info" />
+            android:text="@string/more_info"
+            android:textStyle="bold" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/TIChapter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/chapters" />
+            android:text="@string/chapters"
+            android:textStyle="bold" />
 
     </com.google.android.material.tabs.TabLayout>
 

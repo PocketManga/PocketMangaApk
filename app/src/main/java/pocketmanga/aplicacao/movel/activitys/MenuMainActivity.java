@@ -23,8 +23,9 @@ import pocketmanga.aplicacao.movel.R;
 
 public class MenuMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String USERNAME = "username";
+    public static final String USERNAME = "USERNAME";
     public static final String TOKEN="TOKEN";
+    public static final String ID_USER="ID_USER";
     public static final String PREF_INFO_USER ="PREF_INFO_USER";
 
     private NavigationView navigationView;
@@ -57,11 +58,11 @@ public class MenuMainActivity extends AppCompatActivity implements NavigationVie
     private void carregarCabecalho() {
         SharedPreferences sharedPrefInfoUser = getSharedPreferences(PREF_INFO_USER, Context.MODE_PRIVATE);
 
-        username = sharedPrefInfoUser.getString(USERNAME,"No username");
+        username = sharedPrefInfoUser.getString(USERNAME,"Reader");
 
         View hView = navigationView.getHeaderView(0);
-        TextView tvEmail = hView.findViewById(R.id.TvEmail);
-        tvEmail.setText(username);
+        TextView tvUsername = hView.findViewById(R.id.TvNavUsername);
+        tvUsername.setText(username);
 
         setTitle("Manga List");
     }
@@ -74,49 +75,6 @@ public class MenuMainActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Fragment fragment = null;
-        switch (item .getItemId()) {
-            case R.id.NavLatest:
-                System.out.println("-->Nav Latest");
-                //fragment = new ListaLivrosFragment();
-                //setTitle(item.getTitle());
-                break;
-            case R.id.NavCategory:
-                System.out.println("-->Nav Category");
-                //fragment = new ListaLivrosFragment();
-                //setTitle(item.getTitle());
-                break;
-            case R.id.NavToRead:
-                System.out.println("-->Nav To Read");
-                //fragment = new DinamicoFragment();
-                //setTitle(item.getTitle());
-                break;
-            case R.id.NavReading:
-                System.out.println("-->Nav Reading");
-                //TODO: intent implicto (Action.Send_To)
-                break;
-            case R.id.NavCompleted:
-                System.out.println("-->Nav Completed");
-                //TODO: intent implicto (Action.Send_To)
-                break;
-            case R.id.NavFavorite:
-                System.out.println("-->Nav Favorite");
-                //TODO: intent implicto (Action.Send_To)
-                break;
-            case R.id.NavDownload:
-                System.out.println("-->Nav Download");
-                //TODO: intent implicto (Action.Send_To)
-                break;
-            case R.id.NavDefinitions:
-                System.out.println("-->Nav Definitions");
-                //TODO: intent implicto (Action.Send_To)
-                break;
-        }
-        if (fragment != null)
-            fragmentManager.beginTransaction().replace(R.id.contentFragment, fragment).commit();
-
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-
+        return false;
     }
 }

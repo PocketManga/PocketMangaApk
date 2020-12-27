@@ -30,11 +30,7 @@ import pocketmanga.aplicacao.movel.modelo.Manga;
 import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 
 public class MangaGrelhaFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MangasListener {
-    private static final int EDITAR = 1 ;
-    private static final int ADICIONAR =2 ;
-
     private GridView gvGrelhaMangas;
-    private ArrayList<Manga> mangas;
     //private String Type;
 
     private SearchView searchView;
@@ -63,70 +59,11 @@ public class MangaGrelhaFragment extends Fragment implements SwipeRefreshLayout.
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), MangaActivity.class);
                 intent.putExtra(MangaActivity.IDMANGA, (int) id);
-                //startActivity(intent);
-                startActivityForResult(intent,EDITAR);
+                startActivity(intent);
+                //startActivity(intent,EDITAR);
             }
         });
         return view;
-    }
-
-    //quando retornar a esta atividade
-    //requestCode: código enviado atividade
-    //resultCode: o código recebido da ativvidade
-
-    /**
-     *
-     * @param requestCode código enviado para a atividade
-     * @param resultCode o código recebido pela atividade
-     * @param data
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(resultCode == Activity.RESULT_OK){
-            switch (requestCode){
-                case ADICIONAR:
-                    SingletonGestorPocketManga.getInstance(getContext()).getAllMangasAPI(getContext());
-
-                    Toast.makeText(getContext(),"Livro adicionado com sucesso", Toast.LENGTH_LONG).show();
-                    break;
-                case EDITAR:
-                    SingletonGestorPocketManga.getInstance(getContext()).getAllMangasAPI(getContext());
-
-                    Toast.makeText(getContext(),"Livro editado/eleminado com sucesso",Toast.LENGTH_LONG).show();
-                    break;
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_pesquisa,menu);
-
-        MenuItem itemSearch = menu.findItem(R.id.itemPesquisa);
-        searchView=(SearchView)itemSearch.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                ArrayList<Manga> tempMangas = new ArrayList<>();
-
-                for (Manga mg : SingletonGestorPocketManga.getInstance(getContext()).getAllMangasAPI(getContext()))
-                    if(mg.getTitle().toLowerCase().contains(newText.toLowerCase()) || mg.getOriginalTitle().toLowerCase().contains(newText.toLowerCase()) ||
-                            mg.getAlternativeTitle().toLowerCase().contains(newText.toLowerCase()))
-                        tempMangas.add(mg);
-
-                gvGrelhaMangas.setAdapter(new GrelhaMangaAdapter(getContext(),tempMangas));
-
-                return true;
-            }
-        });
-
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -136,7 +73,6 @@ public class MangaGrelhaFragment extends Fragment implements SwipeRefreshLayout.
         if (searchView!=null)
             searchView.onActionViewCollapsed();
 
-
         SingletonGestorPocketManga.getInstance(getContext()).setMangasListener(this);
     }
 
@@ -144,7 +80,6 @@ public class MangaGrelhaFragment extends Fragment implements SwipeRefreshLayout.
     public void onRefresh() {
         SingletonGestorPocketManga.getInstance(getContext()).getAllMangasAPI(getContext());
         swipeRefreshLayout.setRefreshing(false);
-
     }
 
     @Override
@@ -155,6 +90,6 @@ public class MangaGrelhaFragment extends Fragment implements SwipeRefreshLayout.
 
     @Override
     public void onRefreshInfo() {
-        //EMPTY
+
     }
 }

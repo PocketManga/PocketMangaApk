@@ -18,12 +18,12 @@
         app:srcCompat="@drawable/ic_launcher_foreground" />
 
     <TextView
-        android:id="@+id/TvEmail"
+        android:id="@+id/TvNavUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:text="Email"
+        android:text="Username"
         android:textSize="22sp"
         android:textStyle="bold" />
 
