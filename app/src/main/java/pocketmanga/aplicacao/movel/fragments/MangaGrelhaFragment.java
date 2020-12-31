@@ -1,11 +1,9 @@
 package pocketmanga.aplicacao.movel.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -18,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -30,15 +27,14 @@ import pocketmanga.aplicacao.movel.modelo.Manga;
 import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 
 public class MangaGrelhaFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MangasListener {
+
     private GridView gvGrelhaMangas;
-    //private String Type;
 
     private SearchView searchView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public MangaGrelhaFragment() {
         // Required empty public constructor
-        //this.Type = type; // serve para dizer que é os lastests
     }
 
     @Override
@@ -67,6 +63,37 @@ public class MangaGrelhaFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_search,menu);
+
+        MenuItem searchItem=menu.findItem(R.id.searchItem);
+
+        searchView = (SearchView)searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ArrayList<Manga> tempMangas = new ArrayList<>();
+
+                for (Manga mg : SingletonGestorPocketManga.getInstance(getContext()).getMangas())
+                    if(mg.getTitle().toLowerCase().contains(newText.toLowerCase()) || mg.getAlternativeTitle().toLowerCase().contains(newText.toLowerCase()) ||
+                            mg.getOriginalTitle().toLowerCase().contains(newText.toLowerCase()) || mg.getAuthors().toLowerCase().contains(newText.toLowerCase()))
+                        tempMangas.add(mg);
+
+                gvGrelhaMangas.setAdapter(new GrelhaMangaAdapter(getContext(),tempMangas));
+
+                return true;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public void onResume() {
         //Fechar a searchView
         super.onResume();
@@ -83,13 +110,8 @@ public class MangaGrelhaFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onRefreshMangasList(ArrayList<Manga> mangasList) {
-        if(mangasList!=null)
-            gvGrelhaMangas.setAdapter(new GrelhaMangaAdapter(getContext(),mangasList));
-    }
-
-    @Override
-    public void onRefreshInfo() {
-
+    public void onRefreshMangasList(ArrayList<Manga> MangasList) {
+        if(MangasList!=null)
+            gvGrelhaMangas.setAdapter(new GrelhaMangaAdapter(getContext(),MangasList));
     }
 }

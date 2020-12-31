@@ -27,7 +27,6 @@ public class MangaJsonParser {
                 String originalTitle = manga.getString("OriginalTitle");
                 String releaseDate = manga.getString("ReleaseDate");
                 String server = manga.getString("Server");
-                String list = manga.getString("List");
                 String description = manga.getString("Description");
                 String authors = manga.getString("Authors");
                 String categories = manga.getString("Categories");
@@ -36,7 +35,7 @@ public class MangaJsonParser {
                 boolean r18 = manga.getBoolean("R18");
                 boolean favorite = manga.getBoolean("Favorite");
 
-                Manga auxManga = new Manga(idManga, image, title, alternativeTitle, originalTitle, releaseDate, server, list, description, authors, categories, status, oneshot, r18, favorite);
+                Manga auxManga = new Manga(idManga, image, title, alternativeTitle, originalTitle, releaseDate, server, null, description, authors, categories, status, oneshot, r18, favorite,false);
                 mangas.add(auxManga);
             }
         } catch (JSONException e) {
@@ -58,7 +57,6 @@ public class MangaJsonParser {
             String originalTitle = manga.getString("OriginalTitle");
             String releaseDate = manga.getString("ReleaseDate");
             String server = manga.getString("Server");
-            String list = manga.getString("List");
             String description = manga.getString("Description");
             String authors = manga.getString("Authors");
             String categories = manga.getString("Categories");
@@ -67,7 +65,7 @@ public class MangaJsonParser {
             boolean r18 = manga.getBoolean("R18");
             boolean favorite = manga.getBoolean("Favorite");
 
-            auxManga = new Manga(idManga, image, title, alternativeTitle, originalTitle, releaseDate, server, list, description, authors, categories, status, oneshot, r18, favorite);
+            auxManga = new Manga(idManga, image, title, alternativeTitle, originalTitle, releaseDate, server, null, description, authors, categories, status, oneshot, r18, favorite, false);
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -45,8 +45,8 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
                 RELEASE_DATE_CHAPTER+" TEXT NOT NULL, "+
                 SRC_FOLDER_CHAPTER+" TEXT NOT NULL, "+
                 URL_IMAGE_CHAPTER+" TEXT, "+
-                ONESHOT_CHAPTER+" BOOL NOT NULL, "+
-                READED_CHAPTER+" BOOL NOT NULL, "+
+                ONESHOT_CHAPTER+" INTEGER NOT NULL, "+
+                READED_CHAPTER+" INTEGER NOT NULL, "+
                 MANGA_ID+" INTEGER NOT NULL);";
         db.execSQL(createTableChapter);
     }
@@ -76,8 +76,8 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
         values.put(RELEASE_DATE_CHAPTER,chapter.getReleaseDate());
         values.put(SRC_FOLDER_CHAPTER,chapter.getSrcFolder());
         values.put(URL_IMAGE_CHAPTER,chapter.getUrlImage());
-        values.put(ONESHOT_CHAPTER,chapter.isOneShot());
-        values.put(READED_CHAPTER,chapter.isReaded());
+        values.put(ONESHOT_CHAPTER,(chapter.isOneShot())?1:0);
+        values.put(READED_CHAPTER,(chapter.isReaded())?1:0);
         values.put(MANGA_ID,chapter.getMangaId());
 
         this.db.insert(TABLE_NAME,null,values);
@@ -98,8 +98,8 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
         values.put(RELEASE_DATE_CHAPTER,chapter.getReleaseDate());
         values.put(SRC_FOLDER_CHAPTER,chapter.getSrcFolder());
         values.put(URL_IMAGE_CHAPTER,chapter.getUrlImage());
-        values.put(ONESHOT_CHAPTER,chapter.isOneShot());
-        values.put(READED_CHAPTER,chapter.isReaded());
+        values.put(ONESHOT_CHAPTER,(chapter.isOneShot())?1:0);
+        values.put(READED_CHAPTER,(chapter.isReaded())?1:0);
         values.put(MANGA_ID,chapter.getMangaId());
 
         int nRows=this.db.update(TABLE_NAME,values, "idChapter = ?", new String[]{chapter.getIdChapter()+""});
@@ -130,7 +130,8 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
      */
     public ArrayList<Chapter> getAllChaptersBD(){
         ArrayList<Chapter> chapters=new ArrayList<>();
-        Cursor cursor=this.db.query(TABLE_NAME,new String[]{ID_CHAPTER,PAGES_NUMBER_CHAPTER,SEASON_CHAPTER,NUMBER_CHAPTER,NAME_CHAPTER,RELEASE_DATE_CHAPTER,SRC_FOLDER_CHAPTER,URL_IMAGE_CHAPTER,ONESHOT_CHAPTER,READED_CHAPTER,MANGA_ID},
+        Cursor cursor=this.db.query(TABLE_NAME,new String[]{ID_CHAPTER,PAGES_NUMBER_CHAPTER,SEASON_CHAPTER,NUMBER_CHAPTER,NAME_CHAPTER,
+                        RELEASE_DATE_CHAPTER,SRC_FOLDER_CHAPTER,URL_IMAGE_CHAPTER,ONESHOT_CHAPTER,READED_CHAPTER,MANGA_ID},
                 null,null,null,null,null);
 
         if(cursor.moveToFirst()){
@@ -144,8 +145,8 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
                         cursor.getString(5),
                         cursor.getString(6),
                         cursor.getString(7),
-                        cursor.isNull(8),
-                        cursor.isNull(9));
+                        cursor.getInt(8) == 1,
+                        cursor.getInt(9) == 1);
                 chapters.add(auxChapter);
             }while(cursor.moveToNext());
         }

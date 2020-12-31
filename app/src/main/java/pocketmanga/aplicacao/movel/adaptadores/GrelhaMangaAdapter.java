@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import pocketmanga.aplicacao.movel.R;
 import pocketmanga.aplicacao.movel.modelo.Manga;
+import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 
 public class GrelhaMangaAdapter extends BaseAdapter {
     private Context context;
@@ -70,8 +71,9 @@ public class GrelhaMangaAdapter extends BaseAdapter {
 
         public void update(Manga manga){
             tvTitle.setText(manga.getTitle());
+            String url = SingletonGestorPocketManga.getInstance(context).getBaseUrl()+manga.getImage();
             Glide.with(context)
-                    .load(manga.getImage())
+                    .load(url)
                     .placeholder(R.drawable.manga_alternative)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(ivImage);

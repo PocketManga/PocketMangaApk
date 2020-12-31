@@ -14,10 +14,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import pocketmanga.aplicacao.movel.fragments.BasicMangaGrelhaFragment;
+import pocketmanga.aplicacao.movel.fragments.CategoryGrelhaFragment;
+import pocketmanga.aplicacao.movel.fragments.DefinitionsFragment;
 import pocketmanga.aplicacao.movel.fragments.MangaGrelhaFragment;
 import pocketmanga.aplicacao.movel.R;
 
@@ -75,6 +79,45 @@ public class MenuMainActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+        Fragment fragment= null;
+        switch (item .getItemId()) {
+            case R.id.NavLatest:
+                fragment = new MangaGrelhaFragment();
+                setTitle(item.getTitle());
+                break;
+            case R.id.NavCategory:
+                fragment = new CategoryGrelhaFragment();
+                setTitle(item.getTitle());
+                break;
+            case R.id.NavToRead:
+                fragment = new BasicMangaGrelhaFragment("LIBRARY", 0, 1);
+                setTitle(item.getTitle());
+                break;
+            case R.id.NavReading:
+                fragment = new BasicMangaGrelhaFragment("LIBRARY", 0, 2);
+                setTitle(item.getTitle());
+                break;
+            case R.id.NavCompleted:
+                fragment = new BasicMangaGrelhaFragment("LIBRARY", 0, 3);
+                setTitle(item.getTitle());
+                break;
+            case R.id.NavFavorite:
+                fragment = new BasicMangaGrelhaFragment("FAVORITE", 0, 0);
+                setTitle(item.getTitle());
+                break;
+            case R.id.NavDownload:
+                fragment = new BasicMangaGrelhaFragment("DOWNLOAD", 0, 0);
+                setTitle(item.getTitle());
+                break;
+            case R.id.NavDefinitions:
+                fragment = new DefinitionsFragment();
+                setTitle(item.getTitle());
+                break;
+        }
+        if (fragment != null)
+            fragmentManager.beginTransaction().replace(R.id.contentFragment, fragment).commit();
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

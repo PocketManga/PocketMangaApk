@@ -28,16 +28,19 @@ import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 
 public class ChapterListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ChaptersListener {
 
+    public static final String IDMANGA = "IDMANGA";
     private ListView lvListaChapters;
-    private ArrayList<Chapter> chapters;
+
     private Manga manga;
 
-    private SearchView searchView;
+    public ChapterListFragment() {
+        // Required empty public constructor
+    }
 
     public ChapterListFragment(Manga manga) {
-        // Required empty public constructor
         this.manga = manga;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +50,8 @@ public class ChapterListFragment extends Fragment implements SwipeRefreshLayout.
         lvListaChapters = view.findViewById(R.id.LVListaChapters);
 
         SingletonGestorPocketManga.getInstance(getContext()).setChaptersListener(this);
-        SingletonGestorPocketManga.getInstance(getContext()).getAllChaptersAPI(getContext(), manga.getIdManga());
+        if(manga != null)
+            SingletonGestorPocketManga.getInstance(getContext()).getAllChaptersAPI(getContext(), manga.getIdManga());
 
         lvListaChapters.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -62,11 +66,7 @@ public class ChapterListFragment extends Fragment implements SwipeRefreshLayout.
 
     @Override
     public void onResume() {
-        //Fechar a searchView
         super.onResume();
-        if (searchView!=null)
-            searchView.onActionViewCollapsed();
-
 
         SingletonGestorPocketManga.getInstance(getContext()).setChaptersListener(this);
     }

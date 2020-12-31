@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -184,7 +185,7 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp" />
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/Chapters"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -199,7 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorWhite"
-                android:textSize="18sp" />
+                android:textSize="18sp" />-->
 
             <TextView
                 android:id="@+id/Description"
@@ -220,5 +221,17 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/colorBlack"
+        app:backgroundTint="@color/colorBlack"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_action_favorite_unchecked" />
 
 </FrameLayout>

@@ -6,7 +6,7 @@
     <group android:checkableBehavior ="single">
         <item
             android:id="@+id/NavLatest"
-            android:title="@string/latest" />
+            android:title="Manga List" />
 
         <item
             android:id="@+id/NavCategory"

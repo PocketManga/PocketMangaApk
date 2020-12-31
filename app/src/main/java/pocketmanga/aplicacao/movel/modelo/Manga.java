@@ -3,10 +3,10 @@ package pocketmanga.aplicacao.movel.modelo;
 public class Manga {
     private int IdManga;
     private String Image, Title, AlternativeTitle, OriginalTitle, ReleaseDate, Server, List, Description, Authors, Categories;
-    private boolean Status, Oneshot, R18, Favorite;
+    private boolean Status, Oneshot, R18, Favorite, Download;
 
     public Manga(int idManga, String image, String title, String alternativeTitle, String originalTitle, String releaseDate, String server,
-                 String list, String description, String authors, String categories, boolean status, boolean oneshot, boolean r18, boolean favorite) {
+                 String list, String description, String authors, String categories, boolean status, boolean oneshot, boolean r18, boolean favorite, boolean download) {
         IdManga = idManga;
         Image = image;
         Title = title;
@@ -19,9 +19,18 @@ public class Manga {
         Oneshot = oneshot;
         R18 = r18;
         Favorite = favorite;
+        Download = download;
         List = list;
         Authors = authors;
         Categories = categories;
+    }
+
+    public boolean isDownload() {
+        return Download;
+    }
+
+    public void setDownload(boolean download) {
+        Download = download;
     }
 
     public String getAuthors() {

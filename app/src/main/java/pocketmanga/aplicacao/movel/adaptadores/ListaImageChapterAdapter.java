@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import pocketmanga.aplicacao.movel.R;
 import pocketmanga.aplicacao.movel.modelo.Chapter;
 import pocketmanga.aplicacao.movel.modelo.Manga;
+import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 
 public class ListaImageChapterAdapter extends BaseAdapter {
     private Context context;
@@ -69,8 +70,9 @@ public class ListaImageChapterAdapter extends BaseAdapter {
         }
 
         public void update(String imageUrl){
+            String url = SingletonGestorPocketManga.getInstance(context).getBaseUrl()+imageUrl;
             Glide.with(context)
-                    .load(imageUrl)
+                    .load(url)
                     .placeholder(R.drawable.manga_alternative)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(ivImage);

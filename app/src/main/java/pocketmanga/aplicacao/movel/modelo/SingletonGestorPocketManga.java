@@ -21,13 +21,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pocketmanga.aplicacao.movel.R;
+import pocketmanga.aplicacao.movel.listeners.CategoriesListener;
 import pocketmanga.aplicacao.movel.listeners.ChaptersListener;
 import pocketmanga.aplicacao.movel.listeners.LoginListener;
 import pocketmanga.aplicacao.movel.listeners.MangasListener;
+import pocketmanga.aplicacao.movel.listeners.ServersListener;
+import pocketmanga.aplicacao.movel.utils.CategoryJsonParser;
 import pocketmanga.aplicacao.movel.utils.ChapterJsonParser;
 import pocketmanga.aplicacao.movel.utils.ConnectionJsonParser;
 import pocketmanga.aplicacao.movel.utils.LoginJsonParser;
 import pocketmanga.aplicacao.movel.utils.MangaJsonParser;
+import pocketmanga.aplicacao.movel.utils.ServerJsonParser;
+import pocketmanga.aplicacao.movel.utils.UserJsonParser;
 
 public class SingletonGestorPocketManga {
     private static final int ADICIONAR_BD = 1;
@@ -39,8 +44,9 @@ public class SingletonGestorPocketManga {
 
     private ArrayList<Manga> mangas;
     private ArrayList<Chapter> chapters;
-    //private ArrayList<Category> categories;
-    //private ArrayList<Author> authors;
+    private ArrayList<Category> categories;
+    private ArrayList<Server> servers;
+    private User user;
 
     private MangaBDHelper mangasBD;
     private ChapterBDHelper chaptersBD;
@@ -48,13 +54,16 @@ public class SingletonGestorPocketManga {
     private static RequestQueue volleyQueue = null;
 
     private static final String BASE_URL = "http://192.168.137.1/PocketManga/backend/web/";
-    private static final String mUrlAPIMangas = "api/manga/all/";
+    private static final String mUrlAPIMangas = "api/manga/";
     private static final String mUrlAPIChapters = "api/manga/";
-    private static final String mUrlAPILogin="api/user/login";
-    //private static final String mUrlAPICategories="category/all";
+    private static final String mUrlAPICategories = "api/category/";
+    private static final String mUrlAPIServer = "api/server";
+    private static final String mUrlAPIUser = "api/user/";
 
     private MangasListener mangasListener;
     private ChaptersListener chaptersListener;
+    private CategoriesListener categoriesListener;
+    private ServersListener serversListener;
     private LoginListener loginListener;
 
     public static synchronized SingletonGestorPocketManga getInstance(Context context) {
@@ -68,14 +77,28 @@ public class SingletonGestorPocketManga {
     public SingletonGestorPocketManga(Context context) {
         mangas = new ArrayList<>();
         chapters = new ArrayList<>();
+        mangasBD = new MangaBDHelper(context);
+        chaptersBD = new ChapterBDHelper(context);
     }
 
     public void setMangasListener(MangasListener mangasListener) {
         this.mangasListener = mangasListener;
     }
 
+    public void setServersListener(ServersListener serversListener) {
+        this.serversListener = serversListener;
+    }
+
     public void setChaptersListener(ChaptersListener chaptersListener) {
         this.chaptersListener = chaptersListener;
+    }
+
+    public void setCategoriesListener(CategoriesListener categoriesListener) {
+        this.categoriesListener = categoriesListener;
+    }
+
+    public void setLoginListener(LoginListener loginListener) {
+        this.loginListener=loginListener;
     }
 
     public Manga getManga(int id){
@@ -94,55 +117,191 @@ public class SingletonGestorPocketManga {
         return null;
     }
 
+    public Category getCategory(int id){
+        for(Category category : categories) {
+            if (category.getIdCategory() == id)
+                return category;
+        }
+        return null;
+    }
+
+    public Server getServer(int id){
+        for(Server server : servers) {
+            if (server.getIdServer() == id)
+                return server;
+        }
+        return null;
+    }
+
+    public String getBaseUrl(){
+        return BASE_URL;
+    }
+
+    public User getUser(){
+        return user;
+    }
+
+    public ArrayList<Manga> getMangas(){
+        return mangas;
+    }
+
+    public ArrayList<Chapter> getChapters(){
+        return chapters;
+    }
+
     public void getChapterImages(Chapter chapter){
         chaptersListener.onRefreshChapterImages(chapter);
+    }
+
+    public ArrayList<Server> getServers(){
+        return servers;
     }
 
     /*********************************** Métodos de acesso à BD ***********************************/
 
     /** Manga **/
 
-    public ArrayList<Manga> getMangasBD() {
-        mangas = mangasBD.getAllMangasBD();
-        return mangas;
-    }
-
     public void addMangaBD(Manga manga) {
         mangasBD.addMangaBD(manga);
     }
 
-    public void addMangasBD(ArrayList<Manga> mangas) {
-        mangasBD.deleteAllMangasBD();
-        for (Manga mg : mangas)
-            addMangaBD(mg);
+    // Library
+
+    public void getLibraryMangasBD(int List) {
+        mangas = new ArrayList<>();
+        String list = "NoList";
+        switch (List) {
+            case 1:
+                list = "ToRead";
+                break;
+            case 2:
+                list = "Reading";
+                break;
+            case 3:
+                list = "Completed";
+                break;
+        }
+        for (Manga manga : mangasBD.getAllMangasBD()) {
+            if(manga.getList() != null)
+                if (manga.getList().equals(list))
+                    mangas.add(manga);
+        }
+        if(mangasListener!=null)
+            mangasListener.onRefreshMangasList(mangas);
     }
 
-    public void deleteMangaBD(int id) {
-        Manga mg = getManga(id);
-
-        if (mg != null)
-            mangasBD.deleteMangaBD(id);
-    }
-
-    public void updateMangaBD(Manga manga) {
-        Manga mg = getManga(manga.getIdManga());
-
-        if (mg != null) {
-            if (mangasBD.updateMangaBD(manga)) {
-                mg.setImage(manga.getImage());
-                mg.setTitle(manga.getTitle());
-                mg.setAlternativeTitle(manga.getAlternativeTitle());
-                mg.setOriginalTitle(manga.getOriginalTitle());
-                mg.setReleaseDate(manga.getReleaseDate());
-                mg.setServer(manga.getServer());
-                mg.setDescription(manga.getDescription());
-                mg.setStatus(manga.isStatus());
-                mg.setOneshot(manga.isOneshot());
-                mg.setR18(manga.isR18());
-                mg.setFavorite(manga.isFavorite());
-                mg.setList(manga.getList());
+    public void updateLibraryMangaBD(Manga manga) {
+        boolean existe = false;
+        for (Manga mangaBD: mangasBD.getAllMangasBD()) {
+            if(mangaBD.getIdManga() == manga.getIdManga()){
+                existe = true;
+                mangasBD.updateMangaBD(manga);
             }
         }
+        if (!existe) {
+            mangasBD.addMangaBD(manga);
+        }
+    }
+
+    public int getCountLibraryMangasBD(int List) {
+        ArrayList<Manga> library = new ArrayList<>();
+        String list = "NoList";
+        switch (List) {
+            case 1:
+                list = "ToRead";
+                break;
+            case 2:
+                list = "Reading";
+                break;
+            case 3:
+                list = "Completed";
+                break;
+        }
+        for (Manga manga : mangasBD.getAllMangasBD()) {
+            if(manga.getList() != null)
+                if (manga.getList().equals(list))
+                    library.add(manga);
+        }
+        return library.size();
+    }
+
+    // Download
+
+    public void getDownloadMangasBD() {
+        mangas = new ArrayList<>();
+        ArrayList<Integer> idMangas = new ArrayList<>();
+
+        for (Chapter chapter : chaptersBD.getAllChaptersBD()) {
+            if (!idMangas.contains(chapter.getMangaId()))
+                idMangas.add(chapter.getMangaId());
+        }
+        for (Manga manga : mangasBD.getAllMangasBD()) {
+            if (idMangas.contains(manga.getIdManga()))
+                mangas.add(manga);
+        }
+        if(mangasListener!=null)
+            mangasListener.onRefreshMangasList(mangas);
+    }
+
+    public int getCountDownloadMangasBD() {
+        ArrayList<Manga> downloaded = new ArrayList<>();
+        ArrayList<Integer> idMangas = new ArrayList<>();
+
+        for (Chapter chapter : chaptersBD.getAllChaptersBD()) {
+            if (!idMangas.contains(chapter.getMangaId()))
+                idMangas.add(chapter.getMangaId());
+        }
+        for (Manga manga : mangasBD.getAllMangasBD()) {
+            if (idMangas.contains(manga.getIdManga()))
+                downloaded.add(manga);
+        }
+        return downloaded.size();
+    }
+
+    public int getCountDownloadChaptersBD() {
+        return chaptersBD.getAllChaptersBD().size();
+    }
+
+    // Favorite
+
+    public void getFavoriteMangasBD() {
+        mangas = new ArrayList<>();
+        for (Manga manga : mangasBD.getAllMangasBD()) {
+            if (manga.isFavorite())
+                mangas.add(manga);
+        }
+        if(mangasListener!=null)
+            mangasListener.onRefreshMangasList(mangas);
+    }
+
+    public void addFavoriteMangaBD(Manga favoriteManga) {
+        boolean existe = false;
+        for (Manga mangaBD: mangasBD.getAllMangasBD()) {
+            if(mangaBD.getIdManga() == favoriteManga.getIdManga()){
+                existe = true;
+                //mangaBD.setFavorite(true);
+                mangasBD.updateMangaBD(favoriteManga);
+            }
+        }
+        if (!existe) {
+            mangasBD.addMangaBD(favoriteManga);
+        }
+    }
+
+    public void removeAllFavoriteMangasBD() {
+        for (Manga mangaBD: mangasBD.getAllMangasBD()) {
+            mangaBD.setFavorite(false);
+            mangasBD.updateMangaBD(mangaBD);
+        }
+    }
+
+    public int getCountFavoriteMangasBD() {
+        ArrayList<Manga> favorites = new ArrayList<>();
+        for (Manga manga : mangasBD.getAllMangasBD()) {
+            if (manga.isFavorite())
+                favorites.add(manga);
+        }
+        return favorites.size();
     }
 
     /** Chapter **/
@@ -193,17 +352,21 @@ public class SingletonGestorPocketManga {
     public void getAllMangasAPI(final Context context) {
         if (!ConnectionJsonParser.isConnectionInternet(context)) {
 
-            Toast.makeText(context, "Não existe ligação à internet", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
 
             if(mangasListener!=null)
                 mangasListener.onRefreshMangasList(mangasBD.getAllMangasBD());
         } else {
-            String url = BASE_URL+mUrlAPIMangas+"latestUpdates/1";
+            final String url = BASE_URL+mUrlAPIMangas+"all/latestUpdates/1";
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     mangas = MangaJsonParser.parserJsonMangas(response);
-                    //addMangasBD(mangas);
+                    removeAllFavoriteMangasBD();
+                    for (Manga manga: mangas) {
+                        if(manga.isFavorite())
+                            addFavoriteMangaBD(manga);
+                    }
 
                     if(mangasListener!=null)
                         mangasListener.onRefreshMangasList(mangas);
@@ -212,7 +375,32 @@ public class SingletonGestorPocketManga {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, (error.getMessage()!= null)?error.getMessage():"Error!! => All Mangas API", Toast.LENGTH_SHORT).show();
+                }
+            });
+            volleyQueue.add(req);
+        }
+    }
+
+    public void getCategoryMangasAPI(final Context context, int idCategory) {
+        if (!ConnectionJsonParser.isConnectionInternet(context)) {
+
+            Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
+        } else {
+            final String url = BASE_URL+mUrlAPICategories+idCategory+"/mangas/1";
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    mangas = MangaJsonParser.parserJsonMangas(response);
+
+                    if(mangasListener!=null)
+                        mangasListener.onRefreshMangasList(mangas);
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, (error.getMessage()!= null)?error.getMessage():"Error!! => Category Mangas API", Toast.LENGTH_SHORT).show();
                 }
             });
             volleyQueue.add(req);
@@ -222,12 +410,9 @@ public class SingletonGestorPocketManga {
     public void getAllChaptersAPI(final Context context, final int manga_id) {
         if (!ConnectionJsonParser.isConnectionInternet(context)) {
 
-            Toast.makeText(context, "Não existe ligação à internet", Toast.LENGTH_SHORT).show();
-
-            if(chaptersListener!=null)
-                chaptersListener.onRefreshChaptersList(chaptersBD.getAllChaptersBD());
+            Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
         } else {
-            String url = BASE_URL+mUrlAPIChapters+manga_id+"/chapters/1";
+            final String url = BASE_URL+mUrlAPIChapters+manga_id+"/chapters/1";
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
@@ -240,42 +425,177 @@ public class SingletonGestorPocketManga {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, (error.getMessage()!= null)?error.getMessage():"Error!! => All Chapters API", Toast.LENGTH_SHORT).show();
                 }
             });
             volleyQueue.add(req);
         }
     }
 
-    public void loginAPI(final String username, final String password, final Context context){
-        String url = BASE_URL+mUrlAPILogin;
-        StringRequest req = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                int IdUser = LoginJsonParser.parserJsonIdUser(response);
-                String token = LoginJsonParser.parserJsonToken(response);
-                String Username = LoginJsonParser.parserJsonUsername(response);
-                if(loginListener!=null)
-                    loginListener.onValidateLogin(token,Username, IdUser);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String,String> params = new HashMap<>();
-                params.put("username",username);
-                params.put("password",password);
-                return params;
-            }
-        };
-        volleyQueue.add(req);
+    public void getAllCategoriesAPI(final Context context) {
+        if (!ConnectionJsonParser.isConnectionInternet(context)) {
+
+            Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
+        } else {
+            final String url = BASE_URL+mUrlAPICategories+"all/1";
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    categories = CategoryJsonParser.parserJsonCategories(response);
+
+                    if(categoriesListener!=null)
+                        categoriesListener.onRefreshCategoriesList(categories);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, (error.getMessage()!= null)?error.getMessage():"Error!! => All Categories API", Toast.LENGTH_SHORT).show();
+                }
+            });
+            volleyQueue.add(req);
+        }
     }
 
-    public void setLoginListener(LoginListener loginListener) {
-        this.loginListener=loginListener;
+    public void getAllServersAPI(final Context context) {
+        if (!ConnectionJsonParser.isConnectionInternet(context)) {
+
+            Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
+        } else {
+            final String url = BASE_URL+mUrlAPIServer;
+            JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    servers = ServerJsonParser.parserJsonServers(response);
+
+                    if(serversListener!=null)
+                        serversListener.onRefreshServersList(servers);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, (error.getMessage()!= null)?error.getMessage():"Error!! => All Categories API", Toast.LENGTH_SHORT).show();
+                }
+            });
+            volleyQueue.add(req);
+        }
+    }
+
+    public void getUserAPI(final Context context, final int IdUser) {
+        if (!ConnectionJsonParser.isConnectionInternet(context)) {
+
+            Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
+        } else {
+            final String url = BASE_URL+mUrlAPIUser+"get/"+IdUser;
+            JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    user = UserJsonParser.parserJsonUser(response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, (error.getMessage()!= null)?error.getMessage():"Error!! => User API", Toast.LENGTH_SHORT).show();
+                }
+            });
+            volleyQueue.add(req);
+        }
+    }
+
+    public void updateUserAPI(final Context context, final User newUser){
+        if (!ConnectionJsonParser.isConnectionInternet(context)) {
+
+            Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
+        } else {
+            final String url = BASE_URL+mUrlAPIUser+"update";
+            StringRequest req = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, (error.getMessage()!= null)?error.getMessage():"Error!! => Update User API", Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String,String> params = new HashMap<>();
+                    params.put("IdUser",newUser.getIdUser()+"");
+                    params.put("Theme",newUser.isTheme()+"");
+                    params.put("ChapterShow",newUser.isChapterShow()+"");
+                    params.put("MangaShow",newUser.isMangaShow()+"");
+                    params.put("Server_Id",newUser.getServer_Id()+"");
+                    return params;
+                }
+            };
+            volleyQueue.add(req);
+        }
+    }
+
+    public void updateFavoriteMangaAPI(final Context context, final Manga newManga){
+        if (!ConnectionJsonParser.isConnectionInternet(context)) {
+
+            Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
+        } else {
+            final String url = BASE_URL+mUrlAPIMangas+"update";
+            StringRequest req = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, (error.getMessage()!= null)?error.getMessage():"Error!! => Update Favorite Manga API", Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String,String> params = new HashMap<>();
+                    System.out.println("IdUser = "+user.getIdUser());
+                    System.out.println("IdManga = "+newManga.getIdManga());
+                    System.out.println("Favorite = "+newManga.isFavorite());
+                    params.put("IdUser",user.getIdUser()+"");
+                    params.put("IdManga",newManga.getIdManga()+"");
+                    params.put("Favorite",newManga.isFavorite()+"");
+                    return params;
+                }
+            };
+            volleyQueue.add(req);
+        }
+    }
+
+    public void loginAPI(final String username, final String password, final Context context){
+        if (!ConnectionJsonParser.isConnectionInternet(context)) {
+
+            Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
+        } else {
+            final String url = BASE_URL+mUrlAPIUser+"login";
+            StringRequest req = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    int IdUser = LoginJsonParser.parserJsonIdUser(response);
+                    String token = LoginJsonParser.parserJsonToken(response);
+                    String Username = LoginJsonParser.parserJsonUsername(response);
+                    if(loginListener!=null)
+                        loginListener.onValidateLogin(token,Username, IdUser);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, (error.getMessage()!= null)?error.getMessage():"Error!! => Login API", Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String,String> params = new HashMap<>();
+                    params.put("username",username);
+                    params.put("password",password);
+                    return params;
+                }
+            };
+            volleyQueue.add(req);
+        }
     }
 }

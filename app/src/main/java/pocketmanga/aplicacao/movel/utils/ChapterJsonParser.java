@@ -41,31 +41,4 @@ public class ChapterJsonParser {
         }
         return chapters;
     }
-
-    public static Chapter parserJsonChapter(String response) {
-        Chapter auxChapter = null;
-
-        try {
-            JSONObject chapter = new JSONObject(response);
-
-            int idChapter = chapter.getInt("IdChapter");
-            int mangaId = chapter.getInt("MangaId");
-            int pagesNumber = chapter.getInt("PagesNumber");
-            int season = chapter.getInt("Season");
-            double number = chapter.getDouble("Number");
-            String name = chapter.getString("Name");
-            String releaseDate = chapter.getString("ReleaseDate");
-            String srcFolder = chapter.getString("SrcFolder");
-            String urlImage = chapter.getString("UrlImage");
-            boolean oneShot = chapter.getBoolean("OneShot");
-            boolean readed = chapter.getBoolean("Readed");
-
-            auxChapter = new Chapter(idChapter, pagesNumber, season, mangaId, number, name, releaseDate, srcFolder, urlImage, oneShot, readed);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return auxChapter;
-    }
 }

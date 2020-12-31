@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Switch;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ public class MangaBDHelper extends SQLiteOpenHelper {
     private static final String ONESHOT_MANGA = "Oneshot";
     private static final String R18_MANGA = "R18";
     private static final String FAVORITE_MANGA = "Favorite";
+    private static final String DOWNLOAD_MANGA = "DOWNLOAD";
     private static final String AUTHORS_MANGA = "Authors";
     private static final String CATEGORIES_MANGA = "Categories";
 
@@ -52,10 +54,11 @@ public class MangaBDHelper extends SQLiteOpenHelper {
                 DESCRIPTION_MANGA+" TEXT NOT NULL, "+
                 AUTHORS_MANGA+" TEXT NOT NULL, "+
                 CATEGORIES_MANGA+" TEXT NOT NULL, "+
-                STATUS_MANGA+" BOOL NOT NULL, "+
-                ONESHOT_MANGA+" BOOL NOT NULL, "+
-                R18_MANGA+" BOOL NOT NULL, "+
-                FAVORITE_MANGA+" BOOL NOT NULL);";
+                STATUS_MANGA+" INTEGER NOT NULL, "+
+                ONESHOT_MANGA+" INTEGER NOT NULL, "+
+                R18_MANGA+" INTEGER NOT NULL, "+
+                DOWNLOAD_MANGA+" INTEGER NOT NULL, "+
+                FAVORITE_MANGA+" INTEGER NOT NULL);";
         db.execSQL(createTableManga);
     }
 
@@ -65,6 +68,11 @@ public class MangaBDHelper extends SQLiteOpenHelper {
         db.execSQL(deleteTableManga);
         this.onCreate(db);
     }
+
+    /*@Override
+    public void onOpen(SQLiteDatabase db) {
+        onUpgrade(db,DB_VERSION,DB_VERSION);
+    }/**/
 
     /*********************************************CRUD*********************************************/
 
@@ -85,10 +93,11 @@ public class MangaBDHelper extends SQLiteOpenHelper {
         values.put(SERVER_MANGA,manga.getServer());
         values.put(LIST_MANGA,manga.getList());
         values.put(DESCRIPTION_MANGA,manga.getDescription());
-        values.put(STATUS_MANGA,manga.isStatus());
-        values.put(ONESHOT_MANGA,manga.isOneshot());
-        values.put(R18_MANGA,manga.isR18());
-        values.put(FAVORITE_MANGA,manga.isFavorite());
+        values.put(STATUS_MANGA,(manga.isStatus())?1:0);
+        values.put(ONESHOT_MANGA,(manga.isOneshot())?1:0);
+        values.put(R18_MANGA,(manga.isR18())?1:0);
+        values.put(FAVORITE_MANGA,(manga.isFavorite())?1:0);
+        values.put(DOWNLOAD_MANGA,(manga.isDownload())?1:0);
         values.put(AUTHORS_MANGA,manga.getAuthors());
         values.put(CATEGORIES_MANGA,manga.getCategories());
 
@@ -111,10 +120,11 @@ public class MangaBDHelper extends SQLiteOpenHelper {
         values.put(SERVER_MANGA,manga.getServer());
         values.put(LIST_MANGA,manga.getList());
         values.put(DESCRIPTION_MANGA,manga.getDescription());
-        values.put(STATUS_MANGA,manga.isStatus());
-        values.put(ONESHOT_MANGA,manga.isOneshot());
-        values.put(R18_MANGA,manga.isR18());
-        values.put(FAVORITE_MANGA,manga.isFavorite());
+        values.put(STATUS_MANGA,(manga.isStatus())?1:0);
+        values.put(ONESHOT_MANGA,(manga.isOneshot())?1:0);
+        values.put(R18_MANGA,(manga.isR18())?1:0);
+        values.put(FAVORITE_MANGA,(manga.isFavorite())?1:0);
+        values.put(DOWNLOAD_MANGA,(manga.isDownload())?1:0);
         values.put(AUTHORS_MANGA,manga.getAuthors());
         values.put(CATEGORIES_MANGA,manga.getCategories());
 
@@ -147,7 +157,7 @@ public class MangaBDHelper extends SQLiteOpenHelper {
     public ArrayList<Manga> getAllMangasBD(){
         ArrayList<Manga> mangas=new ArrayList<>();
         Cursor cursor=this.db.query(TABLE_NAME,new String[]{ID_MANGA,IMAGE_MANGA,TITLE_MANGA,ALTERNATIVE_TITLE_MANGA,ORIGINAL_TITLE_MANGA,RELEASE_DATE_MANGA,SERVER_MANGA,
-                        LIST_MANGA,DESCRIPTION_MANGA,AUTHORS_MANGA,CATEGORIES_MANGA,STATUS_MANGA,ONESHOT_MANGA,R18_MANGA,FAVORITE_MANGA},
+                        LIST_MANGA,DESCRIPTION_MANGA,AUTHORS_MANGA,CATEGORIES_MANGA,STATUS_MANGA,ONESHOT_MANGA,R18_MANGA,FAVORITE_MANGA,DOWNLOAD_MANGA},
                 null,null,null,null,null);
 
         if(cursor.moveToFirst()){
@@ -163,10 +173,11 @@ public class MangaBDHelper extends SQLiteOpenHelper {
                         cursor.getString(8),
                         cursor.getString(9),
                         cursor.getString(10),
-                        cursor.isNull(11),
-                        cursor.isNull(12),
-                        cursor.isNull(13),
-                        cursor.isNull(14));
+                        cursor.getInt(11) == 1,
+                        cursor.getInt(12) == 1,
+                        cursor.getInt(13) == 1,
+                        cursor.getInt(14) == 1,
+                        cursor.getInt(14) == 1);
                 mangas.add(auxManga);
             }while(cursor.moveToNext());
         }

@@ -8,16 +8,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 import pocketmanga.aplicacao.movel.R;
+import pocketmanga.aplicacao.movel.listeners.ChaptersListener;
+import pocketmanga.aplicacao.movel.modelo.Chapter;
 import pocketmanga.aplicacao.movel.modelo.Manga;
+import pocketmanga.aplicacao.movel.modelo.Server;
+import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
+import pocketmanga.aplicacao.movel.utils.ConnectionJsonParser;
 
-public class InfoMangaFragment extends Fragment {
+public class InfoMangaFragment extends Fragment{
 
     private Manga manga;
     private TextView tvTitle, tvAlternativeTitle, tvOriginalTitle, tvAuthor, tvR18,
             tvReleaseDate, tvServer, tvStatus, tvOneshot, tvChapters, tvCategories, tvDescription,
             tvLabelAlternativeTitle, tvLabelOriginalTitle, tvLabelOneshot, tvLabelR18;
+
+    public InfoMangaFragment() {
+        // Required empty public constructor
+    }
 
     public InfoMangaFragment(Manga manga) {
         this.manga = manga;
@@ -39,7 +53,7 @@ public class InfoMangaFragment extends Fragment {
         tvStatus = view.findViewById(R.id.TVStatus);
         tvOneshot = view.findViewById(R.id.TVOneshot);
         tvR18 = view.findViewById(R.id.TVR18);
-        tvChapters = view.findViewById(R.id.TVChapters);
+        //tvChapters = view.findViewById(R.id.TVChapters);
         tvCategories = view.findViewById(R.id.TVCategories);
         tvDescription = view.findViewById(R.id.TVDescription);
 
@@ -51,6 +65,29 @@ public class InfoMangaFragment extends Fragment {
         if(manga != null){
             carregarMangaInformation();
         }
+
+        final FloatingActionButton fab=view.findViewById(R.id.fab);
+        if(manga.isFavorite())
+            fab.setImageResource(R.drawable.ic_action_favorite_checked);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ConnectionJsonParser.isConnectionInternet(getContext())) {
+                    if(manga.isFavorite()) {
+                        manga.setFavorite(false);
+                        fab.setImageResource(R.drawable.ic_action_favorite_unchecked);
+                    }else{
+                        manga.setFavorite(true);
+                        fab.setImageResource(R.drawable.ic_action_favorite_checked);
+                    }
+                    SingletonGestorPocketManga.getInstance(getContext()).addMangaBD(manga);
+                    SingletonGestorPocketManga.getInstance(getContext()).updateFavoriteMangaAPI(getContext(),manga);
+                }
+                else{
+                    Toast.makeText(getContext(),"No connection to the internet",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         return view;
     }
@@ -91,7 +128,8 @@ public class InfoMangaFragment extends Fragment {
             tvLabelR18.getLayoutParams().height = 0;
             tvR18.getLayoutParams().height = 0;
         }
-        //tvChapters.setText(manga.getAutor());
+
+        //tvChapters.setText("Has x in Total");
         if(manga.getDescription().equals("null") || manga.getDescription() == null) {
             tvDescription.setText("N/A");
         }else{

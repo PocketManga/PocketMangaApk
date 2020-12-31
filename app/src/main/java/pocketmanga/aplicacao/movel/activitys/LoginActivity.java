@@ -27,6 +27,9 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         etUsername = findViewById(R.id.ETUsername);
         etPassword = findViewById(R.id.ETPassword);
 
+        etUsername.setText("Nildgar");
+        etPassword.setText("admin");
+
         SingletonGestorPocketManga.getInstance(getApplicationContext()).setLoginListener(this);
     }
 
@@ -68,6 +71,8 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
 
         if(token!=null){
             saveInfoSharedPref(token,username,idUser);
+
+            SingletonGestorPocketManga.getInstance(getApplicationContext()).getUserAPI(getApplicationContext(),idUser);
 
             Intent intent= new Intent(this, MenuMainActivity.class);
             intent.putExtra(MenuMainActivity.USERNAME, username);

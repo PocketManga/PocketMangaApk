@@ -12,9 +12,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -37,8 +39,8 @@ public class ChapterActivity extends AppCompatActivity implements ChaptersListen
     public static final String IDCHAPTER = "IDCHAPTER";
     private Chapter chapter;
 
-    private FragmentManager fragmentManager;
     private ListView lvChapterImages;
+    private ListaImageChapterAdapter ImgAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +50,36 @@ public class ChapterActivity extends AppCompatActivity implements ChaptersListen
         lvChapterImages = findViewById(R.id.LVListaChapterImages);
 
         int id = getIntent().getIntExtra(IDCHAPTER, -1);
-
         chapter = SingletonGestorPocketManga.getInstance(getApplicationContext()).getChapter(id);
 
         SingletonGestorPocketManga.getInstance(getApplicationContext()).setChaptersListener(this);
-
         SingletonGestorPocketManga.getInstance(getApplicationContext()).getChapterImages(chapter);
+
+        /*lvChapterImages.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+                        && (lvChapterImages.getLastVisiblePosition() - lvChapterImages.getHeaderViewsCount() -
+                        lvChapterImages.getFooterViewsCount()) >= (ImgAdapter.getCount() - 1)) {
+
+                    chapter = SingletonGestorPocketManga.getInstance(getApplicationContext()).getChapter(chapter.getIdChapter()+1);
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });*/
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -65,14 +91,13 @@ public class ChapterActivity extends AppCompatActivity implements ChaptersListen
     public void onRefreshChapterImages(Chapter chapter) {
         if(chapter != null) {
             ArrayList<String> imagesUrl = new ArrayList<>();
-            String url = null;
             for(int i = 0; i < chapter.getPagesNumber(); i++){
                 String imageUrl = chapter.getUrlImage()+"/"+String.format("%04d", i)+".jpg";
                 imagesUrl.add(imageUrl);
-                url = imageUrl;
             }
-            
-            lvChapterImages.setAdapter(new ListaImageChapterAdapter(getApplicationContext(), imagesUrl));
+
+            ImgAdapter = new ListaImageChapterAdapter(getApplicationContext(), imagesUrl);
+            lvChapterImages.setAdapter(ImgAdapter);
         }
     }
 }

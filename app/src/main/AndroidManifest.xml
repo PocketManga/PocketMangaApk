@@ -12,20 +12,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activitys.ChapterActivity"
-            android:parentActivityName=".activitys.MangaActivity"
+        <activity android:name=".activitys.CategoryActivity"
+            android:parentActivityName=".activitys.MenuMainActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activitys.ChapterActivity"
+            android:parentActivityName=".activitys.MangaActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activitys.MenuMainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activitys.MangaActivity"
             android:parentActivityName=".activitys.MenuMainActivity"
@@ -33,6 +31,11 @@
         <activity
             android:name=".activitys.LoginActivity"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
