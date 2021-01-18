@@ -6,11 +6,8 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
-import com.google.android.material.navigation.NavigationView;
-
 import pocketmanga.aplicacao.movel.R;
 import pocketmanga.aplicacao.movel.fragments.BasicMangaGrelhaFragment;
-import pocketmanga.aplicacao.movel.fragments.MangaGrelhaFragment;
 import pocketmanga.aplicacao.movel.modelo.Category;
 import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 

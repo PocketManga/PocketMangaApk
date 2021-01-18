@@ -16,13 +16,9 @@ import java.util.ArrayList;
 
 import pocketmanga.aplicacao.movel.R;
 import pocketmanga.aplicacao.movel.activitys.CategoryActivity;
-import pocketmanga.aplicacao.movel.activitys.MangaActivity;
 import pocketmanga.aplicacao.movel.adaptadores.GrelhaCategoryAdapter;
-import pocketmanga.aplicacao.movel.adaptadores.GrelhaMangaAdapter;
 import pocketmanga.aplicacao.movel.listeners.CategoriesListener;
 import pocketmanga.aplicacao.movel.modelo.Category;
-import pocketmanga.aplicacao.movel.modelo.Chapter;
-import pocketmanga.aplicacao.movel.modelo.Manga;
 import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 
 public class CategoryGrelhaFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, CategoriesListener {

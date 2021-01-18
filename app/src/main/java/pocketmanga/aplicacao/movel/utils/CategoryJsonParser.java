@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import pocketmanga.aplicacao.movel.modelo.Category;
-import pocketmanga.aplicacao.movel.modelo.Manga;
 
 public class CategoryJsonParser {
 

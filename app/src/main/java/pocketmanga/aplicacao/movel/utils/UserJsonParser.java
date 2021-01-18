@@ -1,12 +1,8 @@
 package pocketmanga.aplicacao.movel.utils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-import pocketmanga.aplicacao.movel.modelo.Category;
 import pocketmanga.aplicacao.movel.modelo.User;
 
 public class UserJsonParser {

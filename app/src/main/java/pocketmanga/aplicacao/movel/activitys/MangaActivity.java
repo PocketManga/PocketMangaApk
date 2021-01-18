@@ -3,15 +3,18 @@ package pocketmanga.aplicacao.movel.activitys;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -21,15 +24,14 @@ import java.util.ArrayList;
 
 import pocketmanga.aplicacao.movel.R;
 import pocketmanga.aplicacao.movel.adaptadores.MangaTabAdapter;
-import pocketmanga.aplicacao.movel.listeners.ChaptersListener;
-import pocketmanga.aplicacao.movel.listeners.MangasListener;
-import pocketmanga.aplicacao.movel.modelo.Chapter;
 import pocketmanga.aplicacao.movel.modelo.Manga;
 import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 
 public class MangaActivity extends AppCompatActivity {
 
     public static final String IDMANGA = "IDMANGA";
+    public static final String DOWNLOADED = "DOWNLOADED";
+
     private Manga manga;
     private TextView tvDescriptionTop;
     private ImageView ivManga;
@@ -58,30 +60,21 @@ public class MangaActivity extends AppCompatActivity {
 
         viewPager.setAdapter(mangaTabAdapter);
 
-        tlBar.setupWithViewPager(viewPager);
-        tlBar.getTabAt(0).setText(getResources().getText(R.string.more_info));
-        tlBar.getTabAt(1).setText(getResources().getText(R.string.chapters));
-
-        ArrayList<String> lists = new ArrayList<>();
-        lists.add("None");
-        lists.add("To Read");
-        lists.add("Reading");
-        lists.add("Completed");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.item_spinner_server, lists);
-        adapter.setDropDownViewResource(R.layout.item_spinner_server2);
-        spLibrary.setAdapter(adapter);
-
+        carregarInformation();
         if(manga != null){
-            setTitle(manga.getTitle());
             carregarMangaInformation();
+            setTitle(manga.getTitle());
         }
         spLibrary.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Object item = parent.getItemAtPosition(position);
-                if (item != null && !item.toString().equals("None")) {
-                    manga.setList(item.toString().replace(" ", ""));
+                if (item != null) {
+                    if(!item.toString().equals("None")) {
+                        manga.setList(item.toString().replace(" ", ""));
+                    }else{
+                        manga.setList(null);
+                    }
                     SingletonGestorPocketManga.getInstance(getApplicationContext()).updateLibraryMangaBD(manga);
                 }
             }
@@ -93,7 +86,52 @@ public class MangaActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+
+        if(getIntent().getBooleanExtra(DOWNLOADED, false))
+            inflater.inflate(R.menu.menu_delete,menu);
+        else
+            inflater.inflate(R.menu.menu_download,menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void carregarInformation() {
+
+        tlBar.setupWithViewPager(viewPager);
+        tlBar.getTabAt(0).setText(getResources().getText(R.string.more_info));
+        tlBar.getTabAt(1).setText(getResources().getText(R.string.chapters));
+
+        ArrayList<String> lists = new ArrayList<>();
+        lists.add(getString(R.string.none));
+        lists.add(getString(R.string.to_read));
+        lists.add(getString(R.string.reading));
+        lists.add(getString(R.string.completed));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.item_spinner_server, lists);
+        adapter.setDropDownViewResource(R.layout.item_spinner_server2);
+        spLibrary.setAdapter(adapter);
+
+    }
+
     private void carregarMangaInformation() {
+        if(manga.getList()!=null) {
+            switch (manga.getList()) {
+                case "ToRead":
+                    spLibrary.setSelection(1);
+                    break;
+                case "Reading":
+                    spLibrary.setSelection(2);
+                    break;
+                case "Completed":
+                    spLibrary.setSelection(3);
+                    break;
+                default:
+                    break;
+            }
+        }
         tvDescriptionTop.setText(manga.getDescription());
         String url = SingletonGestorPocketManga.getInstance(getApplicationContext()).getBaseUrl()+manga.getImage();
         Glide.with(getApplicationContext())
@@ -105,10 +143,22 @@ public class MangaActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.home:
+                finish();
+                return true;
+            case R.id.downloadItem:
+                Intent intent = new Intent(getApplicationContext(), DownloadActivity.class);
+                intent.putExtra(DownloadActivity.IDMANGA, manga.getIdManga());
+                startActivity(intent);
+                return true;
+            case R.id.deleteItem:
+                SingletonGestorPocketManga.getInstance(getApplicationContext()).removeDownloadMangaBD(manga);
+                Toast.makeText(getApplicationContext(), R.string.removed_from_download_with_success, Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
-        return super.onOptionsItemSelected(item);
     }
 }

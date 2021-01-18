@@ -19,7 +19,7 @@
             android:id="@+id/IVManga"
             android:layout_width="110dp"
             android:layout_height="146dp"
-            app:srcCompat="@drawable/no_manga" />
+            app:srcCompat="@drawable/manga_alternative" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,7 +55,7 @@
                     android:id="@+id/Library"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Library List: "
+                    android:text="@string/library_list"
                     android:textColor="@color/colorPurple"
                     android:textSize="15sp"
                     android:textStyle="bold" />

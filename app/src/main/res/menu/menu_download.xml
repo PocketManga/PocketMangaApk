@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/itemPesquisa"
+        android:id="@+id/downloadItem"
         android:icon="@drawable/ic_action_download"
-        android:title="Download Manga"
-        app:showAsAction="always"
-        app:actionViewClass="android.widget.SearchView"/>
+        android:title="@string/download_manga"
+        app:showAsAction="always"/>
 </menu>

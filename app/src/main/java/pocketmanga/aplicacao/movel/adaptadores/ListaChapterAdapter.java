@@ -5,11 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,7 +14,6 @@ import java.util.Date;
 
 import pocketmanga.aplicacao.movel.R;
 import pocketmanga.aplicacao.movel.modelo.Chapter;
-import pocketmanga.aplicacao.movel.modelo.Manga;
 
 public class ListaChapterAdapter extends BaseAdapter {
     private Context context;
@@ -63,6 +58,7 @@ public class ListaChapterAdapter extends BaseAdapter {
 
         return convertView;
     }
+
     private class ViewHolderList{
         private TextView tvTitle, tvReleaseDate;
 
@@ -72,7 +68,7 @@ public class ListaChapterAdapter extends BaseAdapter {
         }
 
         public void update(Chapter chapter){
-            String Text = "S"+chapter.getSeason()+" - Chapter "+chapter.getNumber() + ((chapter.getName().equals("null") || chapter.getName() == null)?"":" - "+chapter.getName());
+            String Text = "S"+chapter.getSeason()+" - Chapter "+(chapter.getNumber()+"").replace(".0", "") + ((chapter.getName().equals("null") || chapter.getName() == null)?"":" - "+chapter.getName());
             tvTitle.setText(Text);
 
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -105,10 +101,12 @@ public class ListaChapterAdapter extends BaseAdapter {
                     ReleaseDate = days+((days==1)?" day":" days")+" ago";
                 }
 
-                tvReleaseDate.setText(ReleaseDate+"");
+                String textDate = ReleaseDate+"";
+                tvReleaseDate.setText(textDate);
 
             } catch (ParseException e) {
-                tvReleaseDate.setText("Error");
+                String error = "Error";
+                tvReleaseDate.setText(error);
                 e.printStackTrace();
             }
         }

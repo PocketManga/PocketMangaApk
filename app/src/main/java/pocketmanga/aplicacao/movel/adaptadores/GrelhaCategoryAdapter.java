@@ -55,6 +55,7 @@ public class GrelhaCategoryAdapter extends BaseAdapter {
 
         return convertView;
     }
+
     private class ViewHolderGrelha{
         private TextView tvName, tvNumber;
 
@@ -64,8 +65,9 @@ public class GrelhaCategoryAdapter extends BaseAdapter {
         }
 
         public void update(Category category){
+            String text = "( "+category.getNumMangas()+" )";
             tvName.setText(category.getName());
-            tvNumber.setText("( "+category.getNumMangas()+" )");
+            tvNumber.setText(text);
         }
     }
 }

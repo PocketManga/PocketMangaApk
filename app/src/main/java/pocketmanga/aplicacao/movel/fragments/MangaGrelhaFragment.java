@@ -25,6 +25,7 @@ import pocketmanga.aplicacao.movel.adaptadores.GrelhaMangaAdapter;
 import pocketmanga.aplicacao.movel.listeners.MangasListener;
 import pocketmanga.aplicacao.movel.modelo.Manga;
 import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
+import pocketmanga.aplicacao.movel.utils.ConnectionJsonParser;
 
 public class MangaGrelhaFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, MangasListener {
 
@@ -48,7 +49,12 @@ public class MangaGrelhaFragment extends Fragment implements SwipeRefreshLayout.
         swipeRefreshLayout.setOnRefreshListener(this);
 
         SingletonGestorPocketManga.getInstance(getContext()).setMangasListener(this);
-        SingletonGestorPocketManga.getInstance(getContext()).getAllMangasAPI(getContext());
+        if (ConnectionJsonParser.isConnectionInternet(getContext())) {
+            SingletonGestorPocketManga.getInstance(getContext()).getAllMangasAPI(getContext());
+            SingletonGestorPocketManga.getInstance(getContext()).removeExtrasMangasBD();
+        }else{
+            SingletonGestorPocketManga.getInstance(getContext()).getAllMangasBD();
+        }
 
         gvGrelhaMangas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -56,7 +62,6 @@ public class MangaGrelhaFragment extends Fragment implements SwipeRefreshLayout.
                 Intent intent = new Intent(getContext(), MangaActivity.class);
                 intent.putExtra(MangaActivity.IDMANGA, (int) id);
                 startActivity(intent);
-                //startActivity(intent,EDITAR);
             }
         });
         return view;

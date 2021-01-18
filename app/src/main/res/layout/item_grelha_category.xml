@@ -26,7 +26,7 @@
                 android:layout_marginTop="50dp"
                 android:ellipsize="end"
                 android:lines="2"
-                android:text="Action"
+                android:text="@string/action"
                 android:textAlignment="center"
                 android:textColor="@color/colorBlack"
                 android:textSize="20sp"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="(20)"
+                android:text="@string/_20"
                 android:textAlignment="center"
                 android:textColor="@color/colorBlack"
                 android:textSize="15sp" />

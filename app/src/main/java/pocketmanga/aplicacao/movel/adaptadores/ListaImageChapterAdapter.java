@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
-
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -15,18 +13,18 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 
 import pocketmanga.aplicacao.movel.R;
-import pocketmanga.aplicacao.movel.modelo.Chapter;
-import pocketmanga.aplicacao.movel.modelo.Manga;
 import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 
 public class ListaImageChapterAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
     private ArrayList<String> imagesUrl;
+    private boolean downloaded;
 
-    public ListaImageChapterAdapter(Context context, ArrayList<String> imagesUrl) {
+    public ListaImageChapterAdapter(Context context, ArrayList<String> imagesUrl, boolean downloaded) {
         this.context = context;
         this.imagesUrl = imagesUrl;
+        this.downloaded = downloaded;
     }
 
     @Override
@@ -62,6 +60,7 @@ public class ListaImageChapterAdapter extends BaseAdapter {
 
         return convertView;
     }
+
     private class ViewHolderLista{
         private ImageView ivImage;
 
@@ -70,11 +69,10 @@ public class ListaImageChapterAdapter extends BaseAdapter {
         }
 
         public void update(String imageUrl){
-            String url = SingletonGestorPocketManga.getInstance(context).getBaseUrl()+imageUrl;
             Glide.with(context)
-                    .load(url)
-                    .placeholder(R.drawable.manga_alternative)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .load(imageUrl)
+                    .placeholder(R.drawable.error_no_image)
+                    .diskCacheStrategy((downloaded)?DiskCacheStrategy.ALL:DiskCacheStrategy.NONE)
                     .into(ivImage);
         }
     }

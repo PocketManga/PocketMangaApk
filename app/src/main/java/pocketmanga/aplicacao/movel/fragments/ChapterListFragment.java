@@ -4,29 +4,25 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SearchView;
 
 import java.util.ArrayList;
 
 import pocketmanga.aplicacao.movel.R;
 import pocketmanga.aplicacao.movel.activitys.ChapterActivity;
-import pocketmanga.aplicacao.movel.activitys.MangaActivity;
-import pocketmanga.aplicacao.movel.adaptadores.GrelhaMangaAdapter;
 import pocketmanga.aplicacao.movel.adaptadores.ListaChapterAdapter;
 import pocketmanga.aplicacao.movel.listeners.ChaptersListener;
-import pocketmanga.aplicacao.movel.listeners.MangasListener;
 import pocketmanga.aplicacao.movel.modelo.Chapter;
 import pocketmanga.aplicacao.movel.modelo.Manga;
 import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
+import pocketmanga.aplicacao.movel.utils.ConnectionJsonParser;
 
-public class ChapterListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ChaptersListener {
+public class ChapterListFragment extends Fragment implements ChaptersListener {
 
     public static final String IDMANGA = "IDMANGA";
     private ListView lvListaChapters;
@@ -50,8 +46,13 @@ public class ChapterListFragment extends Fragment implements SwipeRefreshLayout.
         lvListaChapters = view.findViewById(R.id.LVListaChapters);
 
         SingletonGestorPocketManga.getInstance(getContext()).setChaptersListener(this);
-        if(manga != null)
-            SingletonGestorPocketManga.getInstance(getContext()).getAllChaptersAPI(getContext(), manga.getIdManga());
+        if(manga != null) {
+            if (ConnectionJsonParser.isConnectionInternet(getContext())) {
+                SingletonGestorPocketManga.getInstance(getContext()).getAllChaptersAPI(getContext(), manga.getIdManga());
+            }else{
+                SingletonGestorPocketManga.getInstance(getContext()).getChaptersBD(manga.getIdManga());
+            }
+        }
 
         lvListaChapters.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,19 +68,18 @@ public class ChapterListFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onResume() {
         super.onResume();
-
         SingletonGestorPocketManga.getInstance(getContext()).setChaptersListener(this);
-    }
-
-    @Override
-    public void onRefresh() {
-
     }
 
     @Override
     public void onRefreshChaptersList(ArrayList<Chapter> ChaptersList) {
         if(ChaptersList!=null)
             lvListaChapters.setAdapter(new ListaChapterAdapter(getContext(),ChaptersList));
+    }
+
+    @Override
+    public void onRefreshSelectedChaptersList(ArrayList<Chapter> ChaptersList) {
+        // Don't do nothing
     }
 
     @Override

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGray"
+    tools:context=".activitys.ChapterActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/TVChoseChapters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/chose_the_chapters_for_download"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPurple"
+            android:paddingVertical="10dp"
+            android:textStyle="bold"/>
+
+        <ListView
+            android:id="@+id/LVCheckBoxChapter"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        </ListView>
+
+        <Button
+            android:id="@+id/BTNDownloadChapters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="100dp"
+            android:layout_marginVertical="10dp"
+            android:backgroundTint="@color/colorPurple"
+            android:text="@string/download_chapters" />
+    </LinearLayout>
+
+</FrameLayout>

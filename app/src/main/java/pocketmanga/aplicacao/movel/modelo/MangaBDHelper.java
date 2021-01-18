@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Switch;
 
 import java.util.ArrayList;
 
@@ -177,7 +176,7 @@ public class MangaBDHelper extends SQLiteOpenHelper {
                         cursor.getInt(12) == 1,
                         cursor.getInt(13) == 1,
                         cursor.getInt(14) == 1,
-                        cursor.getInt(14) == 1);
+                        cursor.getInt(15) == 1);
                 mangas.add(auxManga);
             }while(cursor.moveToNext());
         }

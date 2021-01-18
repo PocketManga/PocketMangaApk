@@ -24,12 +24,21 @@ import pocketmanga.aplicacao.movel.fragments.CategoryGrelhaFragment;
 import pocketmanga.aplicacao.movel.fragments.DefinitionsFragment;
 import pocketmanga.aplicacao.movel.fragments.MangaGrelhaFragment;
 import pocketmanga.aplicacao.movel.R;
+import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
+import pocketmanga.aplicacao.movel.modelo.User;
+import pocketmanga.aplicacao.movel.utils.ConnectionJsonParser;
 
 public class MenuMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String USERNAME = "USERNAME";
     public static final String TOKEN="TOKEN";
     public static final String ID_USER="ID_USER";
+    public static final String URL_PHOTO="URLPHOTO";
+    public static final String MANGA_SHOW = "MANGASHOW";
+    public static final String CHAPTER_SHOW="CHAPTERSHOW";
+    public static final String THEME="THEME";
+    public static final String EMAIL = "EMAIL";
+    public static final String SERVER_ID="SERVER_ID";
     public static final String PREF_INFO_USER ="PREF_INFO_USER";
 
     private NavigationView navigationView;
@@ -55,6 +64,11 @@ public class MenuMainActivity extends AppCompatActivity implements NavigationVie
         navigationView.setNavigationItemSelectedListener(this);
         fragmentManager = getSupportFragmentManager();
 
+        int idUser = getIntent().getIntExtra(ID_USER, -1);
+        if (ConnectionJsonParser.isConnectionInternet(getApplicationContext())) {
+            SingletonGestorPocketManga.getInstance(getApplicationContext()).getUserAPI(getApplicationContext(), idUser);
+        }
+
         carregarCabecalho();
         carregarFragmentoInicial();
     }
@@ -62,13 +76,13 @@ public class MenuMainActivity extends AppCompatActivity implements NavigationVie
     private void carregarCabecalho() {
         SharedPreferences sharedPrefInfoUser = getSharedPreferences(PREF_INFO_USER, Context.MODE_PRIVATE);
 
-        username = sharedPrefInfoUser.getString(USERNAME,"Reader");
+        username = sharedPrefInfoUser.getString(USERNAME,getString(R.string.reader));
 
         View hView = navigationView.getHeaderView(0);
         TextView tvUsername = hView.findViewById(R.id.TvNavUsername);
         tvUsername.setText(username);
 
-        setTitle("Manga List");
+        setTitle(getString(R.string.manga_list));
     }
 
     private void carregarFragmentoInicial() {

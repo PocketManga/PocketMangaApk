@@ -4,9 +4,9 @@ public class Chapter {
     private int IdChapter, PagesNumber, Season, MangaId;
     private double Number;
     private String Name, ReleaseDate, SrcFolder, UrlImage;
-    private boolean OneShot, Readed;
+    private boolean OneShot, Readed, Download;
 
-    public Chapter(int idChapter, int pagesNumber, int season, int mangaId, double number, String name, String releaseDate, String srcFolder, String urlImage, boolean oneShot, boolean readed) {
+    public Chapter(int idChapter, int pagesNumber, int season, int mangaId, double number, String name, String releaseDate, String srcFolder, String urlImage, boolean oneShot, boolean readed, boolean download) {
         IdChapter = idChapter;
         PagesNumber = pagesNumber;
         Season = season;
@@ -18,6 +18,15 @@ public class Chapter {
         UrlImage = urlImage;
         OneShot = oneShot;
         Readed = readed;
+        Download = download;
+    }
+
+    public boolean isDownload() {
+        return Download;
+    }
+
+    public void setDownload(boolean download) {
+        Download = download;
     }
 
     public String getUrlImage() {

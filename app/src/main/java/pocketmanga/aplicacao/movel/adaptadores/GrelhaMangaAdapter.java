@@ -60,6 +60,7 @@ public class GrelhaMangaAdapter extends BaseAdapter {
 
         return convertView;
     }
+
     private class ViewHolderGrelha{
         private TextView tvTitle;
         private ImageView ivImage;

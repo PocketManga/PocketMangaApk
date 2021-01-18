@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:padding="15dp"
             android:orientation="vertical">
 
@@ -23,7 +23,7 @@
                 android:textColor="@color/colorPurple"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Title" />
+                android:text="@string/title" />
 
             <TextView
                 android:id="@+id/TVTitle"
@@ -40,7 +40,7 @@
                 android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Alternative Title" />
+                android:text="@string/alternative_title" />
 
             <TextView
                 android:id="@+id/TVAlternativeTitle"
@@ -57,7 +57,7 @@
                 android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Original Title" />
+                android:text="@string/original_title" />
 
             <TextView
                 android:id="@+id/TVOriginalTitle"
@@ -74,7 +74,7 @@
                 android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Author" />
+                android:text="@string/author" />
 
             <TextView
                 android:id="@+id/TVAuthor"
@@ -91,7 +91,7 @@
                 android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Categories" />
+                android:text="@string/categories" />
 
             <TextView
                 android:id="@+id/TVCategories"
@@ -108,7 +108,7 @@
                 android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Release On" />
+                android:text="@string/release_on" />
 
             <TextView
                 android:id="@+id/TVReleaseDate"
@@ -125,7 +125,7 @@
                 android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Server" />
+                android:text="@string/server_v2" />
 
             <TextView
                 android:id="@+id/TVServer"
@@ -142,7 +142,7 @@
                 android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Status" />
+                android:text="@string/status" />
 
             <TextView
                 android:id="@+id/TVStatus"
@@ -159,7 +159,7 @@
                 android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Oneshot" />
+                android:text="@string/oneshot" />
 
             <TextView
                 android:id="@+id/TVOneshot"
@@ -176,7 +176,7 @@
                 android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="R18" />
+                android:text="@string/r18" />
 
             <TextView
                 android:id="@+id/TVR18"
@@ -210,7 +210,7 @@
                 android:paddingTop="10dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Description" />
+                android:text="@string/description" />
 
             <TextView
                 android:id="@+id/TVDescription"

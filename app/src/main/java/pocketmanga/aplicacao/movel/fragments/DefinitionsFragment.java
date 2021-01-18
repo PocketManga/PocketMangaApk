@@ -1,7 +1,8 @@
 package pocketmanga.aplicacao.movel.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import pocketmanga.aplicacao.movel.R;
+import pocketmanga.aplicacao.movel.activitys.MenuMainActivity;
 import pocketmanga.aplicacao.movel.listeners.ServersListener;
 import pocketmanga.aplicacao.movel.modelo.Server;
 import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
@@ -40,6 +41,7 @@ public class DefinitionsFragment extends Fragment implements ServersListener {
     private RadioButton rbModeScroll, rbModePaginated, rbThemeDark, rbThemeLight;
     private RadioGroup rgReadingMode, rgTheme;
     private Spinner spServer;
+    private Button btnLogout;
 
     public DefinitionsFragment() {
         // Required empty public constructor
@@ -59,6 +61,7 @@ public class DefinitionsFragment extends Fragment implements ServersListener {
         tvTotalCompleted = view.findViewById(R.id.TVTotalCompleted);
         tvTotalMangaDownloaded = view.findViewById(R.id.TVTotalMangaDownloaded);
         tvTotalChapterDownloaded = view.findViewById(R.id.TVTotalChapterDownloaded);
+        btnLogout = view.findViewById(R.id.BTNLogout);
 
         ivUserImage = view.findViewById(R.id.IVUserImage);
 
@@ -74,6 +77,20 @@ public class DefinitionsFragment extends Fragment implements ServersListener {
 
         SetInfo();
         SingletonGestorPocketManga.getInstance(getContext()).setServersListener(this);
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = getActivity();
+                if(activity!=null)
+                    activity.finish();
+
+                SharedPreferences sharedPrefUser = getContext().getSharedPreferences(MenuMainActivity.PREF_INFO_USER, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPrefUser.edit();
+                editor.putString(MenuMainActivity.TOKEN,null);
+                editor.apply();
+            }
+        });
 
         rgReadingMode.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -134,7 +151,7 @@ public class DefinitionsFragment extends Fragment implements ServersListener {
                     SingletonGestorPocketManga.getInstance(getContext()).updateUserAPI(getContext(),user);
                 }
                 else{
-                    Toast.makeText(getContext(),"No connection to the internet",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.no_connection_to_the_internet,Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -142,7 +159,6 @@ public class DefinitionsFragment extends Fragment implements ServersListener {
         return view;
     }
 
-    @SuppressLint("SetTextI18n")
     private void SetInfo(){
         SingletonGestorPocketManga.getInstance(getContext()).getAllServersAPI(getContext());
         if(user!=null) {
@@ -162,12 +178,18 @@ public class DefinitionsFragment extends Fragment implements ServersListener {
             }
             tvUsername.setText(user.getUsername());
             tvUserEmail.setText(user.getEmail());
-            tvTotalFavorite.setText("Have "+SingletonGestorPocketManga.getInstance(getContext()).getCountFavoriteMangasBD()+" in total");
-            tvTotalToRead.setText("Have "+SingletonGestorPocketManga.getInstance(getContext()).getCountLibraryMangasBD(1)+" in total");
-            tvTotalReading.setText("Have "+SingletonGestorPocketManga.getInstance(getContext()).getCountLibraryMangasBD(2)+" in total");
-            tvTotalCompleted.setText("Have "+SingletonGestorPocketManga.getInstance(getContext()).getCountLibraryMangasBD(3)+" in total");
-            tvTotalMangaDownloaded.setText("Have "+SingletonGestorPocketManga.getInstance(getContext()).getCountDownloadMangasBD()+" in total");
-            tvTotalChapterDownloaded.setText("Have "+SingletonGestorPocketManga.getInstance(getContext()).getCountDownloadChaptersBD()+" in total");
+            String favoriteText = "Have "+SingletonGestorPocketManga.getInstance(getContext()).getCountFavoriteMangasBD()+" in total";
+            tvTotalFavorite.setText(favoriteText);
+            String toReadText = "Have "+SingletonGestorPocketManga.getInstance(getContext()).getCountLibraryMangasBD(1)+" in total";
+            tvTotalToRead.setText(toReadText);
+            String readingText = "Have "+SingletonGestorPocketManga.getInstance(getContext()).getCountLibraryMangasBD(2)+" in total";
+            tvTotalReading.setText(readingText);
+            String completedText = "Have "+SingletonGestorPocketManga.getInstance(getContext()).getCountLibraryMangasBD(3)+" in total";
+            tvTotalCompleted.setText(completedText);
+            String mangaDownloadedText = "Have "+SingletonGestorPocketManga.getInstance(getContext()).getCountDownloadMangasBD()+" in total";
+            tvTotalMangaDownloaded.setText(mangaDownloadedText);
+            String chapterDownloadedText = "Have "+SingletonGestorPocketManga.getInstance(getContext()).getCountDownloadChaptersBD()+" in total";
+            tvTotalChapterDownloaded.setText(chapterDownloadedText);
 
             String url = SingletonGestorPocketManga.getInstance(getContext()).getBaseUrl()+user.getUrlPhoto();
             Glide.with(getContext())

@@ -1,9 +1,5 @@
 package pocketmanga.aplicacao.movel.utils;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +7,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import pocketmanga.aplicacao.movel.modelo.Chapter;
-import pocketmanga.aplicacao.movel.modelo.Manga;
 
 public class ChapterJsonParser {
 
@@ -33,7 +28,7 @@ public class ChapterJsonParser {
                 boolean oneShot = chapter.getBoolean("OneShot");
                 boolean readed = chapter.getBoolean("Readed");
 
-                Chapter auxChapter = new Chapter(idChapter, pagesNumber, season, mangaId, number, name, releaseDate, srcFolder, urlImage, oneShot, readed);
+                Chapter auxChapter = new Chapter(idChapter, pagesNumber, season, mangaId, number, name, releaseDate, srcFolder, urlImage, oneShot, readed, false);
                 chapters.add(auxChapter);
             }
         } catch (JSONException e) {

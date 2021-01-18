@@ -12,13 +12,8 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-
 import pocketmanga.aplicacao.movel.R;
-import pocketmanga.aplicacao.movel.listeners.ChaptersListener;
-import pocketmanga.aplicacao.movel.modelo.Chapter;
 import pocketmanga.aplicacao.movel.modelo.Manga;
-import pocketmanga.aplicacao.movel.modelo.Server;
 import pocketmanga.aplicacao.movel.modelo.SingletonGestorPocketManga;
 import pocketmanga.aplicacao.movel.utils.ConnectionJsonParser;
 
@@ -62,13 +57,13 @@ public class InfoMangaFragment extends Fragment{
         tvLabelOneshot = view.findViewById(R.id.Oneshot);
         tvLabelR18 = view.findViewById(R.id.R18);
 
+        final FloatingActionButton fab=view.findViewById(R.id.fab);
+
         if(manga != null){
             carregarMangaInformation();
+            if(manga.isFavorite())
+                fab.setImageResource(R.drawable.ic_action_favorite_checked);
         }
-
-        final FloatingActionButton fab=view.findViewById(R.id.fab);
-        if(manga.isFavorite())
-            fab.setImageResource(R.drawable.ic_action_favorite_checked);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,11 +75,14 @@ public class InfoMangaFragment extends Fragment{
                         manga.setFavorite(true);
                         fab.setImageResource(R.drawable.ic_action_favorite_checked);
                     }
-                    SingletonGestorPocketManga.getInstance(getContext()).addMangaBD(manga);
-                    SingletonGestorPocketManga.getInstance(getContext()).updateFavoriteMangaAPI(getContext(),manga);
+                    SingletonGestorPocketManga.getInstance(getContext()).updateFavoriteMangaBD(manga);
+                    if(manga.isFavorite())
+                        SingletonGestorPocketManga.getInstance(getContext()).createFavoriteMangaAPI(getContext(),manga);
+                    else
+                        SingletonGestorPocketManga.getInstance(getContext()).deleteFavoriteMangaAPI(getContext(),manga);
                 }
                 else{
-                    Toast.makeText(getContext(),"No connection to the internet",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.no_connection_to_the_internet,Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -109,21 +107,25 @@ public class InfoMangaFragment extends Fragment{
         }
         tvAuthor.setText(manga.getAuthors());
         tvCategories.setText(manga.getCategories());
-        tvReleaseDate.setText(manga.getReleaseDate()+"");
+        String textDate = manga.getReleaseDate()+"";
+        tvReleaseDate.setText(textDate);
         tvServer.setText(manga.getServer());
         if(manga.isStatus()) {
-            tvStatus.setText("Completed");
+            String completed = getString(R.string.completed);
+            tvStatus.setText(completed);
         }else{
-            tvStatus.setText("Ongoing");
+            String ongoing = getString(R.string.ongoing);
+            tvStatus.setText(ongoing);
         }
+        String yes = getString(R.string.yes);
         if(manga.isOneshot()) {
-            tvOneshot.setText("Yes");
+            tvOneshot.setText(yes);
         }else{
             tvLabelOneshot.getLayoutParams().height = 0;
             tvOneshot.getLayoutParams().height = 0;
         }
         if(manga.isR18()) {
-            tvR18.setText("Yes");
+            tvR18.setText(yes);
         }else{
             tvLabelR18.getLayoutParams().height = 0;
             tvR18.getLayoutParams().height = 0;

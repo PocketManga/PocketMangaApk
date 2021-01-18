@@ -41,7 +41,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Username"
+                        android:text="@string/username"
                         android:textAlignment="center"
                         android:textColor="@color/colorPurple"
                         android:textSize="20sp"
@@ -54,11 +54,21 @@
                         android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Email"
+                        android:text="@string/email"
                         android:textAlignment="center"
                         android:textColor="@color/colorPurple"
                         android:textSize="15sp"
                         android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/BTNLogout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:backgroundTint="@color/colorPurple"
+                        android:textColor="@color/colorBlack"
+                        android:layout_weight="1"
+                        android:text="@string/logout" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -67,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
-                android:text="Reading Mode:"
+                android:text="@string/reading_mode"
                 android:textColor="@color/colorPurple"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -83,7 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:button="@drawable/ic_action_radio_button_unchecked"
-                    android:text="Scroll"
+                    android:text="@string/scroll"
                     android:textSize="15sp"
                     android:textColor="@color/colorWhite" />
 
@@ -92,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:button="@drawable/ic_action_radio_button_unchecked"
-                    android:text="Paginated"
+                    android:text="@string/paginated"
                     android:textSize="15sp"
                     android:textColor="@color/colorWhite" />
             </RadioGroup>
@@ -102,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:text="Theme:"
+                android:text="@string/theme"
                 android:textColor="@color/colorPurple"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -118,7 +128,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:button="@drawable/ic_action_radio_button_unchecked"
-                    android:text="Dark"
+                    android:text="@string/dark"
                     android:textSize="15sp"
                     android:textColor="@color/colorWhite" />
 
@@ -127,7 +137,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:button="@drawable/ic_action_radio_button_unchecked"
-                    android:text="Light"
+                    android:text="@string/light"
                     android:textSize="15sp"
                     android:textColor="@color/colorWhite" />
             </RadioGroup>
@@ -142,7 +152,7 @@
                     android:id="@+id/TVServer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Server:"
+                    android:text="@string/server"
                     android:textColor="@color/colorPurple"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -164,7 +174,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/colorBlack"
-                android:text="More Info" />
+                android:text="@string/more_info" />
 
             <TextView
                 android:id="@+id/TVManga"
@@ -174,7 +184,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/colorPurple"
                 android:textSize="17sp"
-                android:text="Mangas" />
+                android:text="@string/mangas" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -190,7 +200,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
-                    android:text="On Favorites:" />
+                    android:text="@string/on_favorites" />
 
                 <TextView
                     android:id="@+id/TVTotalFavorite"
@@ -200,7 +210,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/colorWhite"
                     android:textSize="15sp"
-                    android:text="Have x in total"
+                    android:text="@string/have_x_in_total"
                     tools:ignore="RtlSymmetry" />
             </LinearLayout>
 
@@ -218,7 +228,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
-                    android:text="On Library To Read:" />
+                    android:text="@string/on_library_to_read" />
 
                 <TextView
                     android:id="@+id/TVTotalToRead"
@@ -228,7 +238,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/colorWhite"
                     android:textSize="15sp"
-                    android:text="Have x in total"
+                    android:text="@string/have_x_in_total"
                     tools:ignore="RtlSymmetry" />
             </LinearLayout>
 
@@ -246,7 +256,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
-                    android:text="On Library Reading:" />
+                    android:text="@string/on_library_reading" />
 
                 <TextView
                     android:id="@+id/TVTotalReading"
@@ -256,7 +266,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/colorWhite"
                     android:textSize="15sp"
-                    android:text="Have x in total"
+                    android:text="@string/have_x_in_total"
                     tools:ignore="RtlSymmetry" />
             </LinearLayout>
 
@@ -274,7 +284,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
-                    android:text="On Library Completed:" />
+                    android:text="@string/on_library_completed" />
 
                 <TextView
                     android:id="@+id/TVTotalCompleted"
@@ -284,7 +294,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/colorWhite"
                     android:textSize="15sp"
-                    android:text="Have x in total"
+                    android:text="@string/have_x_in_total"
                     tools:ignore="RtlSymmetry" />
             </LinearLayout>
 
@@ -302,7 +312,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
-                    android:text="On Downloaded:" />
+                    android:text="@string/on_downloaded" />
 
                 <TextView
                     android:id="@+id/TVTotalMangaDownloaded"
@@ -310,7 +320,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingStart="10dp"
-                    android:text="Have x in total"
+                    android:text="@string/have_x_in_total"
                     android:textColor="@color/colorWhite"
                     android:textSize="15sp"
                     tools:ignore="RtlSymmetry" />
@@ -324,7 +334,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/colorPurple"
                 android:textSize="17sp"
-                android:text="Chapters" />
+                android:text="@string/chapters" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -340,7 +350,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp"
-                    android:text="On Downloaded:" />
+                    android:text="@string/on_downloaded" />
 
                 <TextView
                     android:id="@+id/TVTotalChapterDownloaded"
@@ -348,7 +358,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingStart="10dp"
-                    android:text="Have x in total"
+                    android:text="@string/have_x_in_total"
                     android:textColor="@color/colorWhite"
                     android:textSize="15sp"
                     tools:ignore="RtlSymmetry" />

@@ -24,6 +24,7 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
     private static final String URL_IMAGE_CHAPTER = "UrlImage";
     private static final String ONESHOT_CHAPTER = "OneShot";
     private static final String READED_CHAPTER = "Readed";
+    private static final String DOWNLOAD_CHAPTER = "DOWNLOAD";
     private static final String MANGA_ID = "MangaId";
 
     private final SQLiteDatabase db;
@@ -47,6 +48,7 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
                 URL_IMAGE_CHAPTER+" TEXT, "+
                 ONESHOT_CHAPTER+" INTEGER NOT NULL, "+
                 READED_CHAPTER+" INTEGER NOT NULL, "+
+                DOWNLOAD_CHAPTER+" INTEGER NOT NULL, "+
                 MANGA_ID+" INTEGER NOT NULL);";
         db.execSQL(createTableChapter);
     }
@@ -57,6 +59,11 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
         db.execSQL(deleteTableChapter);
         this.onCreate(db);
     }
+
+    /*@Override
+    public void onOpen(SQLiteDatabase db) {
+        onUpgrade(db,DB_VERSION,DB_VERSION);
+    }/**/
 
     /*********************************************CRUD*********************************************/
 
@@ -78,6 +85,7 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
         values.put(URL_IMAGE_CHAPTER,chapter.getUrlImage());
         values.put(ONESHOT_CHAPTER,(chapter.isOneShot())?1:0);
         values.put(READED_CHAPTER,(chapter.isReaded())?1:0);
+        values.put(DOWNLOAD_CHAPTER,(chapter.isDownload())?1:0);
         values.put(MANGA_ID,chapter.getMangaId());
 
         this.db.insert(TABLE_NAME,null,values);
@@ -100,6 +108,7 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
         values.put(URL_IMAGE_CHAPTER,chapter.getUrlImage());
         values.put(ONESHOT_CHAPTER,(chapter.isOneShot())?1:0);
         values.put(READED_CHAPTER,(chapter.isReaded())?1:0);
+        values.put(DOWNLOAD_CHAPTER,(chapter.isDownload())?1:0);
         values.put(MANGA_ID,chapter.getMangaId());
 
         int nRows=this.db.update(TABLE_NAME,values, "idChapter = ?", new String[]{chapter.getIdChapter()+""});
@@ -122,6 +131,16 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * DELETE
+     * @param id
+     * @return
+     */
+    public boolean deleteChapterBDFromManga(int id){
+        int nRows=this.db.delete(TABLE_NAME,"MangaId = ?", new String[]{id+""});
+        return (nRows>0);
+    }
+
+    /**
      * SELECT
      * pode-se usar rawQuery mas é mais susceptivel de SQL injection
      * this.db.rawQuery("SELECT * FROM ... WHERE ...".null)
@@ -131,7 +150,7 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
     public ArrayList<Chapter> getAllChaptersBD(){
         ArrayList<Chapter> chapters=new ArrayList<>();
         Cursor cursor=this.db.query(TABLE_NAME,new String[]{ID_CHAPTER,PAGES_NUMBER_CHAPTER,SEASON_CHAPTER,NUMBER_CHAPTER,NAME_CHAPTER,
-                        RELEASE_DATE_CHAPTER,SRC_FOLDER_CHAPTER,URL_IMAGE_CHAPTER,ONESHOT_CHAPTER,READED_CHAPTER,MANGA_ID},
+                        RELEASE_DATE_CHAPTER,SRC_FOLDER_CHAPTER,URL_IMAGE_CHAPTER,ONESHOT_CHAPTER,READED_CHAPTER,DOWNLOAD_CHAPTER,MANGA_ID},
                 null,null,null,null,null);
 
         if(cursor.moveToFirst()){
@@ -139,14 +158,15 @@ public class ChapterBDHelper extends SQLiteOpenHelper {
                 Chapter auxChapter=new Chapter(cursor.getInt(0),
                         cursor.getInt(1),
                         cursor.getInt(2),
-                        cursor.getInt(10),
+                        cursor.getInt(11),
                         cursor.getDouble(3),
                         cursor.getString(4),
                         cursor.getString(5),
                         cursor.getString(6),
                         cursor.getString(7),
                         cursor.getInt(8) == 1,
-                        cursor.getInt(9) == 1);
+                        cursor.getInt(9) == 1,
+                        cursor.getInt(10) == 1);
                 chapters.add(auxChapter);
             }while(cursor.moveToNext());
         }

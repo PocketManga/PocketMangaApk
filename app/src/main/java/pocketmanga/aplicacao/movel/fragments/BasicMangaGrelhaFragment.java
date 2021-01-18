@@ -63,6 +63,8 @@ public class BasicMangaGrelhaFragment extends Fragment implements MangasListener
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), MangaActivity.class);
                 intent.putExtra(MangaActivity.IDMANGA, (int) id);
+                if(TYPE.equals("DOWNLOAD"))
+                    intent.putExtra(MangaActivity.DOWNLOADED, true);
                 startActivity(intent);
             }
         });
@@ -73,5 +75,6 @@ public class BasicMangaGrelhaFragment extends Fragment implements MangasListener
     public void onRefreshMangasList(ArrayList<Manga> MangasList) {
         if(MangasList!=null)
             gvGrelhaMangas.setAdapter(new GrelhaMangaAdapter(getContext(),MangasList));
+
     }
 }
