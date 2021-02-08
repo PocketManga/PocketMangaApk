@@ -17,7 +17,7 @@ import pocketmanga.aplicacao.movel.modelo.User;
 import pocketmanga.aplicacao.movel.utils.ConnectionJsonParser;
 
 public class LoginActivity extends AppCompatActivity implements LoginListener {
-    private EditText etUsername, etPassword;
+    private EditText etUsername, etPassword, etDeviceIP1, etDeviceIP2, etDeviceIP3, etDeviceIP4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,10 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
 
         etUsername = findViewById(R.id.ETUsername);
         etPassword = findViewById(R.id.ETPassword);
+        etDeviceIP1 = findViewById(R.id.ETDeviceIP1);
+        etDeviceIP2 = findViewById(R.id.ETDeviceIP2);
+        etDeviceIP3 = findViewById(R.id.ETDeviceIP3);
+        etDeviceIP4 = findViewById(R.id.ETDeviceIP4);
 
         SingletonGestorPocketManga.getInstance(getApplicationContext()).setLoginListener(this);
 
@@ -37,6 +41,27 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
 
             String username = etUsername.getText().toString();
             String password = etPassword.getText().toString();
+            String ip1 = etDeviceIP1.getText().toString();
+            String ip2 = etDeviceIP2.getText().toString();
+            String ip3 = etDeviceIP3.getText().toString();
+            String ip4 = etDeviceIP4.getText().toString();
+
+            if (!isIPValid(ip1)) {
+                etDeviceIP1.setError(getString(R.string.invalid_ip_number));
+                return;
+            }
+            if (!isIPValid(ip2)) {
+                etDeviceIP2.setError(getString(R.string.invalid_ip_number));
+                return;
+            }
+            if (!isIPValid(ip3)) {
+                etDeviceIP3.setError(getString(R.string.invalid_ip_number));
+                return;
+            }
+            if (!isIPValid(ip4)) {
+                etDeviceIP4.setError(getString(R.string.invalid_ip_number));
+                return;
+            }
 
             if (!isUsernameValid(username)) {
                 etUsername.setError(getString(R.string.invalid_username));
@@ -48,10 +73,19 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
                 return;
             }
 
+            SingletonGestorPocketManga.getInstance(getApplicationContext()).setDeviceIP(ip1+"."+ip2+"."+ip3+"."+ip4);
+
             SingletonGestorPocketManga.getInstance(getApplicationContext()).loginAPI(username, password, getApplicationContext());
         }else{
             Toast.makeText(getApplicationContext(), "No connection to the internet", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean isIPValid(String ipNumber) {
+        if(ipNumber.isEmpty())
+            return false;
+        int Ip = Integer.parseInt(ipNumber);
+        return Ip >= 0 && Ip <= 255;
     }
 
     private boolean isUsernameValid(String username) {
@@ -72,7 +106,16 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         String st_chapterShow = sharedPrefUser.getString(MenuMainActivity.CHAPTER_SHOW, null);
         String st_theme = sharedPrefUser.getString(MenuMainActivity.THEME, null);
         String email = sharedPrefUser.getString(MenuMainActivity.EMAIL, null);
+        String device_ip = sharedPrefUser.getString(MenuMainActivity.DEVICE_IP, null);
         String st_server_Id = sharedPrefUser.getString(MenuMainActivity.SERVER_ID, null);
+
+        if(device_ip != null) {
+            SingletonGestorPocketManga.getInstance(getApplicationContext()).setDeviceIP(device_ip);
+            setDeviceIP(device_ip);
+        }
+        else {
+            SingletonGestorPocketManga.getInstance(getApplicationContext()).setDeviceIP("127.0.0.1");
+        }
 
         if(username!=null)
             etUsername.setText(username);
@@ -101,6 +144,14 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
         else {
             Toast.makeText(getApplicationContext(), R.string.the_username_or_password_is_incorrect,Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void setDeviceIP(String deviceIP) {
+        String[] Ip = deviceIP.split("\\.");
+        etDeviceIP1.setText(Ip[0]);
+        etDeviceIP2.setText(Ip[1]);
+        etDeviceIP3.setText(Ip[2]);
+        etDeviceIP4.setText(Ip[3]);
     }
 
     @Override

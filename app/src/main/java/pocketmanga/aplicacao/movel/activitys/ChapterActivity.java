@@ -97,7 +97,7 @@ public class ChapterActivity extends AppCompatActivity implements ChaptersListen
             }
             Chapter chapterBD = SingletonGestorPocketManga.getInstance(getApplicationContext()).getChapterBD(chapter.getIdChapter());
 
-            ImgAdapter = new ListaImageChapterAdapter(getApplicationContext(), imagesUrl, chapterBD.isDownload());
+            ImgAdapter = new ListaImageChapterAdapter(getApplicationContext(), imagesUrl, chapterBD!=null);
             lvChapterImages.setAdapter(ImgAdapter);
         }
     }

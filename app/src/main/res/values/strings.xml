@@ -69,4 +69,8 @@
     <string name="no_connection_to_the_internet">No connection to the internet</string>
     <string name="ongoing">Ongoing</string>
     <string name="yes">Yes</string>
+    <string name="point">.</string>
+    <string name="_255">255</string>
+    <string name="device_ip_insert_ip">Device IP (Insert IP)</string>
+    <string name="invalid_ip_number">Invalid Ip Number</string>
 </resources>

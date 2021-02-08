@@ -39,6 +39,7 @@ public class MenuMainActivity extends AppCompatActivity implements NavigationVie
     public static final String THEME="THEME";
     public static final String EMAIL = "EMAIL";
     public static final String SERVER_ID="SERVER_ID";
+    public static final String DEVICE_IP="DEVICE_IP";
     public static final String PREF_INFO_USER ="PREF_INFO_USER";
 
     private NavigationView navigationView;

@@ -50,7 +50,9 @@ public class SingletonGestorPocketManga {
 
     private static RequestQueue volleyQueue = null;
 
-    private static final String BASE_URL = "http://192.168.137.1/PocketManga/backend/web/";
+    private static final String HTTP = "http://";//192.168.1.68/PocketManga/backend/web/";
+    private static final String POCKETMANGA_LINK = "/PocketManga/backend/web/";
+    private static String device_ip = "127.0.0.1";
     private static final String mUrlAPIMangas = "api/manga/";
     private static final String mUrlAPIChapters = "api/manga/";
     private static final String mUrlAPICategories = "api/category/";
@@ -99,6 +101,10 @@ public class SingletonGestorPocketManga {
         this.loginListener=loginListener;
     }
 
+    public void setDeviceIP(String device_ip) {
+        SingletonGestorPocketManga.device_ip = device_ip;
+    }
+
     public void refreshSelectedChapters(ArrayList<Chapter> selectedChapters) {
         if(chaptersListener != null)
             chaptersListener.onRefreshSelectedChaptersList(selectedChapters);
@@ -137,7 +143,7 @@ public class SingletonGestorPocketManga {
     }
 
     public String getBaseUrl(){
-        return BASE_URL;
+        return HTTP+device_ip+POCKETMANGA_LINK;
     }
 
     public User getUser(){
@@ -174,6 +180,10 @@ public class SingletonGestorPocketManga {
         editor.putString(MenuMainActivity.THEME,newUser.isTheme()+"");
         editor.putString(MenuMainActivity.EMAIL,newUser.getEmail());
         editor.putString(MenuMainActivity.SERVER_ID,newUser.getServer_Id()+"");
+        if(!device_ip.equals("127.0.0.1"))
+            editor.putString(MenuMainActivity.DEVICE_IP, device_ip);
+        else
+            editor.putString(MenuMainActivity.DEVICE_IP, null);
 
         editor.apply();
         user = newUser;
@@ -424,7 +434,7 @@ public class SingletonGestorPocketManga {
             if(mangasListener!=null)
                 mangasListener.onRefreshMangasList(mangasBD.getAllMangasBD());
         } else {
-            final String url = BASE_URL+mUrlAPIMangas+"all/latestUpdates/"+user.getIdUser();
+            final String url = getBaseUrl()+mUrlAPIMangas+"all/latestUpdates/"+user.getIdUser();
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
@@ -452,7 +462,7 @@ public class SingletonGestorPocketManga {
 
             Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
         } else {
-            final String url = BASE_URL+mUrlAPICategories+idCategory+"/mangas/"+user.getIdUser();
+            final String url = getBaseUrl()+mUrlAPICategories+idCategory+"/mangas/"+user.getIdUser();
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
@@ -477,7 +487,7 @@ public class SingletonGestorPocketManga {
 
             Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
         } else {
-            final String url = BASE_URL+mUrlAPIChapters+manga_id+"/chapters/"+user.getIdUser();
+            final String url = getBaseUrl()+mUrlAPIChapters+manga_id+"/chapters/"+user.getIdUser();
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
@@ -502,7 +512,7 @@ public class SingletonGestorPocketManga {
 
             Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
         } else {
-            final String url = BASE_URL+mUrlAPICategories+"all/"+user.getIdUser();
+            final String url = getBaseUrl()+mUrlAPICategories+"all/"+user.getIdUser();
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
@@ -526,7 +536,7 @@ public class SingletonGestorPocketManga {
 
             Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
         } else {
-            final String url = BASE_URL+mUrlAPIServer;
+            final String url = getBaseUrl()+mUrlAPIServer;
             JsonArrayRequest req = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
@@ -550,7 +560,7 @@ public class SingletonGestorPocketManga {
 
             Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
         } else {
-            final String url = BASE_URL+mUrlAPIUser+"get/"+IdUser;
+            final String url = getBaseUrl()+mUrlAPIUser+"get/"+IdUser;
             JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -575,7 +585,7 @@ public class SingletonGestorPocketManga {
         } else {
             /** Params not working on the normal way, so used this way to replace **/
             String params = "?IdUser="+newUser.getIdUser()+"&Theme="+newUser.isTheme()+"&ChapterShow="+newUser.isChapterShow()+"&MangaShow="+newUser.isMangaShow()+"&Server_Id="+newUser.getServer_Id();
-            final String url = BASE_URL+mUrlAPIUser+"update"+params;
+            final String url = getBaseUrl()+mUrlAPIUser+"update"+params;
             StringRequest req = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -607,7 +617,7 @@ public class SingletonGestorPocketManga {
 
             Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
         } else {
-            final String url = BASE_URL+mUrlAPIFavorite+"create";
+            final String url = getBaseUrl()+mUrlAPIFavorite+"create";
             System.out.println(url);
             StringRequest req = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
@@ -637,7 +647,7 @@ public class SingletonGestorPocketManga {
 
             Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
         } else {
-            final String url = BASE_URL+mUrlAPIFavorite+"delete/user/"+user.getIdUser()+"/manga/"+oldManga.getIdManga();
+            final String url = getBaseUrl()+mUrlAPIFavorite+"delete/user/"+user.getIdUser()+"/manga/"+oldManga.getIdManga();
             System.out.println(url);
             StringRequest req = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
                 @Override
@@ -659,7 +669,7 @@ public class SingletonGestorPocketManga {
 
             Toast.makeText(context, "No connection to the internet", Toast.LENGTH_SHORT).show();
         } else {
-            final String url = BASE_URL+mUrlAPIUser+"login";
+            final String url = getBaseUrl()+mUrlAPIUser+"login";
             StringRequest req = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
